@@ -23,6 +23,12 @@ dist/
 target/
 dist/
 
+# Eclipse IDE
+.classpath
+.project
+.settings/
+.factorypath
+
 # JetBrains IDE
 .idea/
 
