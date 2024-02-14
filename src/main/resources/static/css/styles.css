@@ -11,12 +11,6 @@ body {
     color: var(--primary-dark);
 }
 
-a {
-    padding: 2.5%;
-    margin: 2.5%;
-    text-decoration: none;
-}
-
 /*Navbar*/
 #nav-bar {
     height: 10vh;
@@ -30,6 +24,7 @@ a {
     margin: 0;
     padding: 1.5%;
     cursor: pointer;
+    text-decoration: none;
 }
 
 #nav-sidebar-divider {
@@ -61,6 +56,9 @@ a {
     font-size: 130%;
     background-color: var(--primary-dark);
     color: var(--primary-light);
+    padding: 2.5%;
+    margin: 2.5%;
+    text-decoration: none;
 }
 
 #sidebar .aside-link:hover {
@@ -73,9 +71,21 @@ a {
     background-color: var(--secondary-light);
 }
 
+/*page link*/
+.page-link {
+    color: var(--primary-dark);
+    text-decoration: underline; 
+    cursor: pointer;
+    display: inline;
+}
+.page-link:hover {
+    color: var(--primary-dark);
+    text-decoration-color: var(--accent-color);
+}
+
 .response-window {
     display: flex;
     justify-content: center;
-    padding: 5%;
+    padding: 2.5%;
     /*    align-items: center;*/
 }

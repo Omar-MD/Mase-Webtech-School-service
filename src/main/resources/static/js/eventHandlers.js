@@ -8,6 +8,17 @@ $(document).ready(function() {
         $('#login-page').removeClass('d-none');
     });
 
+    $('#login-page-link').on('click', function() {
+        $('#home-page').addClass('d-none');
+        $('#login-page').removeClass('d-none');
+    });
+    
+     // Signup
+    $('#signup-page-link').on('click', function() {
+        $('#home-page').addClass('d-none');
+        $('#signup-page').removeClass('d-none');
+    });
+    
     // Logout
     $('#logout-nav-link').on('click', function() {
         /*logout()*/
