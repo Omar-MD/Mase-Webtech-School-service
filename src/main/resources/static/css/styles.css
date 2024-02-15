@@ -22,7 +22,7 @@ body {
     color: var(--primary-light);
     font-size: 150%;
     margin: 0;
-    padding: 1.5%;
+    padding: 0;
     cursor: pointer;
     text-decoration: none;
 }
@@ -98,6 +98,5 @@ body {
 .response-window {
     height: 90vh;
     display: flex;
-    justify-content: center;
     padding: 2.5%;
 }
