@@ -104,12 +104,12 @@ body {
 }
 
 .form-container {
-   max-height: 85vh;
-   overflow: hidden;
+    max-height: 85vh;
+    overflow: hidden;
     width: auto;
     height: auto;
     max-width: 100%;
-    max-height: auto;
+    max-height: 100%;
 }
 
 .response-window {

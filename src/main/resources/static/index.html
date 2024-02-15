@@ -27,7 +27,7 @@
                             <i class="fa fa-sign-in"></i> Login
                         </a>
                         <a class="aside-link" id="signup-nav-link" href="#">
-                            <i class="fas fa-user-plus"></i> Signup
+                            <i class="fas fa-user-plus"></i> SignUp
                         </a>
                         <a class="aside-link d-none" id="logout-nav-link" href="#">
                             <i class="fa fa-sign-out"></i> Logout
@@ -270,15 +270,15 @@
                                 <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create your account</h5>
 
                                 <div class="form-outline mb-4">
-                                    <input type="email" id="signup-email" class="form-control form-control-lg"
+                                    <input type="email" id="sign-up-email" class="form-control form-control-lg"
                                         required />
-                                    <label class="form-label" for="signup-email">Email address</label>
+                                    <label class="form-label" for="sign-up-email">Email address</label>
                                 </div>
 
                                 <div class="form-outline mb-4">
-                                    <input type="password" id="signup-password" class="form-control form-control-lg"
+                                    <input type="password" id="sign-up-password" class="form-control form-control-lg"
                                         required />
-                                    <label class="form-label" for="signup-password">Password</label>
+                                    <label class="form-label" for="sign-up-password">Password</label>
                                 </div>
 
                                 <div class="form-outline mb-4">
@@ -288,9 +288,9 @@
                                 </div>
 
                                 <div class="pt-1 mb-4">
-                                    <button class="btn btn-dark btn-lg btn-block" type="submit">Sign Up</button>
+                                    <button class="btn btn-dark btn-lg btn-block" type="button" id="signup-button">Sign Up</button>
                                 </div>
-
+                                <div id="signupMsg" style="display: none;"></div>
                                 <p class="mb-5 pb-lg-2">Already have an account? <a id="signup-login-link"
                                         class="page-link">Login here</a></p>
                             </form>
@@ -333,9 +333,9 @@
                                 </div>
 
                                 <div class="pt-1 mb-4">
-                                    <button class="btn btn-dark btn-lg btn-block" type="button">Login</button>
+                                    <button class="btn btn-dark btn-lg btn-block" type="button" id="login-button">Login</button>
                                 </div>
-
+                                <div id="loginMsg" style="display: none;"></div>
                                 <p class="mb-5 pb-lg-2">Don't have an account? <a id="login-signup-link"
                                         class="page-link">Register here</a></p>
                             </form>
@@ -353,6 +353,7 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/304174d8a3.js" crossorigin="anonymous"></script>
     <script type="module" src="js/jquery-3.4.1.js"></script>
+    <script type="module" src="js/login_signup.js"></script>
     <script type="module" src="js/eventHandlers.js"></script>
 </body>
 
