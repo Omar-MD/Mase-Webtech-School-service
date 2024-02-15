@@ -35,11 +35,6 @@ body {
 }
 
 /*Sidebar*/
-#aside-container {
-    height: 90vh;
-    background-color: var(--primary-light);
-}
-
 #sidebar {
     height: inherit;
     padding: 0;
@@ -74,18 +69,35 @@ body {
 /*page link*/
 .page-link {
     color: var(--primary-dark);
-    text-decoration: underline; 
+    text-decoration: underline;
     cursor: pointer;
     display: inline;
 }
+
 .page-link:hover {
     color: var(--primary-dark);
     text-decoration-color: var(--accent-color);
 }
 
+/*Login/Signup Page*/
+#login-page {
+    padding: 0;
+    margin: 0;
+}
+
+.login-heading {
+    font-weight: 300;
+}
+
+.btn-login {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 0.75rem 1rem;
+}
+
 .response-window {
+    height: 90vh;
     display: flex;
     justify-content: center;
     padding: 2.5%;
-    /*    align-items: center;*/
 }
