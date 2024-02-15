@@ -4,66 +4,83 @@ $(document).ready(function() {
 
     // Login
     $('#login-nav-link').on('click', function() {
-        $('#home-page').addClass('d-none');
-        $('#login-page').removeClass('d-none');
+        pageNavigation('#login-page');
+    });
+    $('#login-page-link').on('click', function() {
+        pageNavigation('#login-page');
+    });
+    $('#signup-login-link').on('click', function() {
+        pageNavigation('#login-page');
     });
 
-    $('#login-page-link').on('click', function() {
-        $('#home-page').addClass('d-none');
-        $('#login-page').removeClass('d-none');
+    // Signup
+    $('#signup-nav-link').on('click', function() {
+        pageNavigation('#signup-page');
     });
-    
-     // Signup
     $('#signup-page-link').on('click', function() {
-        $('#home-page').addClass('d-none');
-        $('#signup-page').removeClass('d-none');
+        pageNavigation('#signup-page');
     });
-    
+    $('#login-signup-link').on('click', function() {
+        pageNavigation('#signup-page');
+    });
+
     // Logout
     $('#logout-nav-link').on('click', function() {
-        /*logout()*/
+        
+        // Glyphicons
         $('#login-nav-link').removeClass('d-none');
         $('#logout-nav-link').addClass('d-none');
+        // Page Nav
+        homeContentNavigation("#ethos-nav-link", '#ethos-page');
+        pageNavigation('#home-page');
     });
 
     // Home Page
     $('#logo').on('click', function() {
-        $('#home-page').removeClass('d-none');
-        $('#login-page').addClass('d-none');
-        $('#create-account-page').addClass('d-none');
-        handleSidebarNavigation("#ethos-nav-link" ,'#ethos-page');
+        homeContentNavigation("#ethos-nav-link", '#ethos-page');
+        pageNavigation('#home-page');
     });
 
     // About Us
     $("#ethos-nav-link").on('click', function() {
-          handleSidebarNavigation("#ethos-nav-link" ,'#ethos-page');
+        homeContentNavigation("#ethos-nav-link", '#ethos-page');
+        pageNavigation('#home-page');
     });
 
     // Curriculm
     $("#curriculum-nav-link").on('click', function() {
-          handleSidebarNavigation("#curriculum-nav-link", '#curriculum-page');
+        homeContentNavigation("#curriculum-nav-link", '#curriculum-page');
+        pageNavigation('#home-page');
     });
 
     // Admission Process
-    $("#admission-nav-link").on('click', function() {        
-         handleSidebarNavigation("#admission-nav-link", '#admission-page');
+    $("#admission-nav-link").on('click', function() {
+        homeContentNavigation("#admission-nav-link", '#admission-page');
+        pageNavigation('#home-page');
     });
 
     // Tuition Fees
     $("#tuition-nav-link").on('click', function() {
-         handleSidebarNavigation("#tuition-nav-link", '#tuition-page');
+        homeContentNavigation("#tuition-nav-link", '#tuition-page');
+        pageNavigation('#home-page');
     });
 
     // Contact Us
     $("#contact-nav-link").on('click', function() {
-        handleSidebarNavigation("#contact-nav-link", '#contact-page');
+        homeContentNavigation("#contact-nav-link", '#contact-page');
+        pageNavigation('#home-page');
     });
 });
 
-const handleSidebarNavigation = function(navID, pageID) {
+const homeContentNavigation = function(navID, pageID) {
     $('.aside-link').removeClass('active');
     $(navID).addClass('active');
-    
+
+    $('.home-content').addClass('d-none');
+    $(pageID).removeClass('d-none');
+}
+
+const pageNavigation = function(pageID) {
     $('.main-page').addClass('d-none');
     $(pageID).removeClass('d-none');
 }

@@ -79,12 +79,7 @@ body {
     text-decoration-color: var(--accent-color);
 }
 
-/*Login/Signup Page*/
-#login-page {
-    padding: 0;
-    margin: 0;
-}
-
+/*Login Page*/
 .login-heading {
     font-weight: 300;
 }
@@ -95,8 +90,29 @@ body {
     padding: 0.75rem 1rem;
 }
 
+.image-container {
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 0 20px var(--primary-dark);
+}
+
+.image-container img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: auto;
+}
+
+.form-container {
+   max-height: 85vh;
+   overflow: hidden;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: auto;
+}
+
 .response-window {
     height: 90vh;
-    display: flex;
-    padding: 2.5%;
+    padding: 1.5%;
 }
