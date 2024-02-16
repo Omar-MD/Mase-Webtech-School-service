@@ -2546,8 +2546,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 			// makes the latter nonnegative.
 			matchedCount += i;
 
-			// Apply set filters to unmatched elements
-			// NOTE: This can be skipped if there are no unmatched elements (i.e., `matchedCount`
+			// Apply set filters to unmatched element
 			// equals `i`), unless we didn't visit _any_ elements in the above loop because we have
 			// no element matchers and no seed.
 			// Incrementing an initially-string "0" `i` allows `i` to remain a string only in that

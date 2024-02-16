@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="ligth">
+<html lang="en" data-bs-theme="dark">
 
 <head>
     <meta charset="utf-8">
@@ -41,6 +41,11 @@
                 <div class="row">
                     <hr id="nav-sidebar-divider" />
                     <aside class="col-md-2  aside text-center" id="sidebar">
+                        <div class="d-none" id="user-nav">
+                            <a class="aside-link" id="user-nav-link"><i class="fa-solid fa-home me-2"></i>
+                                User Home</a>
+                            <hr style="color: white;" / >
+                        </div>
                         <a class="aside-link" id="ethos-nav-link"><i class="fa-solid fa-info-circle me-2"></i>
                             Ethos</a>
                         <a class="aside-link" id="curriculum-nav-link"><i class="fa-solid fa-book me-2"></i>
@@ -54,7 +59,7 @@
                     </aside>
 
                     <div class="col-md-10 response-window overflow-auto">
-                        <main class="col-md-12 home-content" id="ethos-page">
+                        <main class="col-md-12 home-content" id="ethos-content">
                             <h2 class="text-center">Ethos</h2>
                             <p>Welcome to the Martial Arts Coding School, where tradition meets innovation. Our ethos
                                 revolves around the fusion of ancient martial arts wisdom with modern coding techniques.
@@ -90,7 +95,7 @@
                                 light and darkness blur, and the true nature of power reveals itself.</p>
                         </main>
 
-                        <main class="col-md-12 home-content d-none" id="curriculum-page">
+                        <main class="col-md-12 home-content d-none" id="curriculum-content">
                             <h2 class="text-center">Curriculum</h2>
                             <h3>Martial Arts Focus</h3>
                             <p>Prepare to delve into the shadows of mastery at the Martial Arts Coding School, where our
@@ -134,7 +139,7 @@
                             </ul>
                         </main>
 
-                        <main class="col-md-12 home-content d-none" id="admission-page">
+                        <main class="col-md-12 home-content d-none" id="admission-content">
                             <h2 class="text-center">Admission Process</h2>
                             <p>Welcome to the dark admission process of the Martial Arts Coding School. We're eager to
                                 initiate you into our shadows!</p>
@@ -176,7 +181,7 @@
                             <p>We eagerly anticipate the arrival of your child into our shadows!</p>
                         </main>
 
-                        <main class="col-md-12 home-content d-none" id="tuition-page">
+                        <main class="col-md-12 home-content d-none" id="tuition-content">
                             <h2 class="text-center">Tuition Fees</h2>
                             <p>Welcome to the <strong>dark depths</strong> of tuition fees, where the shadows whisper
                                 secrets of sacrifice and power. Behold the grim reality of the Martial Arts Coding
@@ -204,7 +209,7 @@
                             </p>
                         </main>
 
-                        <main class="col-md-12 home-content d-none" id="contact-page">
+                        <main class="col-md-12 home-content d-none" id="contact-content">
                             <h2 class="text-center">Contact Us</h2>
                             <p>Welcome to the shadows of the Martial Arts Coding School's contact page. If you dare to
                                 seek enlightenment or wish to entangle yourself in our web, proceed cautiously.</p>
@@ -242,6 +247,10 @@
                                 <a><i class="fab fa-instagram-square fa-2x"></i></a>
                             </div>
                         </main>
+
+                        <main class="col-md-12 home-content d-none" id="user-content">
+                        </main>
+
                     </div>
                 </div>
             </section>
@@ -258,7 +267,7 @@
 
                     <div class="col-md-3 col-lg-3 d-flex align-items-center">
                         <div class="card-body p-4 p-lg-5 text-black">
-            
+
                             <!-- Sign Up Form -->
                             <form class="form-container">
                                 <div class="d-flex align-items-center mb-3 pb-1">
@@ -288,12 +297,13 @@
                                 </div>
 
                                 <div class="pt-1 mb-4">
-                                    <button class="btn btn-dark btn-lg btn-block" type="button" id="signup-button">Sign Up</button>
+                                    <button class="btn btn-dark btn-lg btn-block" type="button" id="signup-button">Sign
+                                        Up</button>
                                 </div>
-                                <div id="signupMsg" style="display: none;"></div>
                                 <p class="mb-5 pb-lg-2">Already have an account? <a id="signup-login-link"
                                         class="page-link">Login here</a></p>
                             </form>
+                            <div id="signupMsg" style="display: none;"></div>
                         </div>
                     </div>
 
@@ -333,12 +343,13 @@
                                 </div>
 
                                 <div class="pt-1 mb-4">
-                                    <button class="btn btn-dark btn-lg btn-block" type="button" id="login-button">Login</button>
+                                    <button class="btn btn-dark btn-lg btn-block" type="button"
+                                        id="login-button">Login</button>
                                 </div>
-                                <div id="loginMsg" style="display: none;"></div>
                                 <p class="mb-5 pb-lg-2">Don't have an account? <a id="login-signup-link"
                                         class="page-link">Register here</a></p>
                             </form>
+                            <div id="loginMsg" style="display: none;"></div>
                         </div>
                     </div>
 
@@ -353,7 +364,6 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/304174d8a3.js" crossorigin="anonymous"></script>
     <script type="module" src="js/jquery-3.4.1.js"></script>
-    <script type="module" src="js/login_signup.js"></script>
     <script type="module" src="js/eventHandlers.js"></script>
 </body>
 
