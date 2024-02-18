@@ -16,14 +16,14 @@ import com.tus.webtech.school_service.response.ApiResponse;
 import jakarta.validation.Valid;
 
 @RestController
-public class AuthenticationController {
+public class AuthController {
 
 	private static final String INVALID_CRED = "Invalid email or password!";
 	private static final String EMAIL_TAKEN = "Email already in use!";
 	private static final String ACC_CREATED = "Account Created!";
 
 	private final UserRepo userRepo;
-	public AuthenticationController(UserRepo userRepo) {
+	public AuthController(UserRepo userRepo) {
 		this.userRepo = userRepo;
 	}
 
