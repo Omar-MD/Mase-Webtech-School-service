@@ -1,11 +1,13 @@
-package com.tus.webtech.school_service.dto;
+package com.tus.schoolservice.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
+@Table(name="users")
 public class User extends BaseEntity {
 
 	@NotBlank

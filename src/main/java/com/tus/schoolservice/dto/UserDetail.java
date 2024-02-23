@@ -1,4 +1,4 @@
-package com.tus.webtech.school_service.dto;
+package com.tus.schoolservice.dto;
 
 public class UserDetail {
 	private String email;

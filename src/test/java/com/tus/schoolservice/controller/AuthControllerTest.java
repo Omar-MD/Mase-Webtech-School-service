@@ -1,4 +1,4 @@
-package com.tus.webtech.school_service.controller;
+package com.tus.schoolservice.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -11,11 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import com.tus.webtech.school_service.dao.UserRepo;
-import com.tus.webtech.school_service.dto.User;
-import com.tus.webtech.school_service.dto.UserDetail;
-import com.tus.webtech.school_service.dto.UserType;
-import com.tus.webtech.school_service.response.ApiResponse;
+import com.tus.schoolservice.dao.UserRepo;
+import com.tus.schoolservice.dto.User;
+import com.tus.schoolservice.dto.UserDetail;
+import com.tus.schoolservice.dto.UserType;
+import com.tus.schoolservice.response.ApiResponse;
 
 class AuthControllerTest {
 	private AuthController authController;

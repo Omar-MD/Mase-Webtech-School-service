@@ -1,4 +1,4 @@
-package com.tus.webtech.school_service.dto;
+package com.tus.schoolservice.dto;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

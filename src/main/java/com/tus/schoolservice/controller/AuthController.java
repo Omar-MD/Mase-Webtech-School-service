@@ -1,4 +1,4 @@
-package com.tus.webtech.school_service.controller;
+package com.tus.schoolservice.controller;
 
 import java.util.Optional;
 
@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tus.webtech.school_service.dao.UserRepo;
-import com.tus.webtech.school_service.dto.User;
-import com.tus.webtech.school_service.dto.UserDetail;
-import com.tus.webtech.school_service.dto.UserType;
-import com.tus.webtech.school_service.response.ApiResponse;
+import com.tus.schoolservice.dao.UserRepo;
+import com.tus.schoolservice.dto.User;
+import com.tus.schoolservice.dto.UserDetail;
+import com.tus.schoolservice.dto.UserType;
+import com.tus.schoolservice.response.ApiResponse;
 
 import jakarta.validation.Valid;
 

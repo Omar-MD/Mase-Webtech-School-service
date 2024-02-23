@@ -1,4 +1,4 @@
-package com.tus.webtech.school_service;
+package com.tus.schoolservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

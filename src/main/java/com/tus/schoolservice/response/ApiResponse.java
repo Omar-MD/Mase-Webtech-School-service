@@ -1,4 +1,4 @@
-package com.tus.webtech.school_service.response;
+package com.tus.schoolservice.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
