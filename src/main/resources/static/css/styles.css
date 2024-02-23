@@ -104,15 +104,18 @@ body {
 }
 
 .form-container {
-    max-height: 85vh;
-    overflow: hidden;
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
+    max-height: calc(100vh - 20vh); /* Subtract the height of the navbar */
+    overflow: auto; /* Enable scrolling if content exceeds the height */
+    padding: 0%;
 }
 
 .response-window {
     height: 90vh;
     padding: 1.5%;
 }
+
+#signupMsg {
+    margin-bottom: auto;
+    margin-top: 0%;
+}
+

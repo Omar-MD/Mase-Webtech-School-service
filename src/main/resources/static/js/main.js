@@ -1,3 +1,6 @@
+
+const rootUrl = "http://localhost:8082";
+
 // Application Event Handlers
 $(document).ready(function() {
 
@@ -19,7 +22,7 @@ $(document).ready(function() {
     });
     $('#login-button').on('click', function(event) {
         event.preventDefault();
-        login();
+        authenticate();
     });
 
     // Signup
@@ -39,13 +42,7 @@ $(document).ready(function() {
 
     // Logout
     $('#logout-nav-link').on('click', function() {
-        // Nav
-        $('#login-nav-link').removeClass('d-none');
-        $('#signup-nav-link').removeClass('d-none');
-        $('#logout-nav-link').addClass('d-none');
-        $('#user-nav').addClass('d-none');
-        
-        // Page
+        showLogoutState();
         homeNav("#ethos-nav-link", '#ethos-content');
         pageNav('#home-page');
     });
@@ -100,26 +97,34 @@ const pageNav = function(pageID) {
     $(pageID).removeClass('d-none');
 }
 
-const rootUrl = "http://localhost:8082";
+const showLogInState = function() {
+    $('#user-nav').removeClass('d-none');
+    $('#logout-nav-link').removeClass('d-none');
+    $('#login-nav-link').addClass('d-none');
+    $('#signup-nav-link').addClass('d-none');
+}
 
-const login = function() {
-    let email = $('#login-email').val();
+const showLogoutState = function() {
+    $('#user-nav').addClass('d-none');
+    $('#logout-nav-link').addClass('d-none');
+    $('#login-nav-link').removeClass('d-none');
+    $('#signup-nav-link').removeClass('d-none');
+}
+
+const authenticate = function() {
+    let username = $('#login-username').val();
     let password = $('#login-password').val();
     $('#loginMsg').hide();
 
     $.ajax({
         type: 'POST',
-        url: rootUrl + "/login",
+        url: rootUrl + "/auth/authenticate",
         contentType: 'application/json',
-        data: JSON.stringify({ "email": email, "password": password }),
+        data: JSON.stringify({ "username": username, "password": password }),
         dataType: "json",
         success: function(resp) {
             if (resp.status === "OK") {
-                $('#user-nav').removeClass('d-none');
-                $('#logout-nav-link').removeClass('d-none');
-                $('#login-nav-link').addClass('d-none');
-                $('#signup-nav-link').addClass('d-none');
-
+                showLogInState();
                 homeNav('#user-nav-link', '#user-content');
                 pageNav('#home-page');
             } else {
@@ -134,6 +139,7 @@ const login = function() {
 
 const signup = function() {
     let email = $('#sign-up-email').val();
+    let username = $('#sign-up-username').val();
     let password = $('#sign-up-password').val();
     let confirmPassword = $('#confirm-password').val();
     $('#signupMsg').hide();
@@ -145,9 +151,9 @@ const signup = function() {
 
     $.ajax({
         type: 'POST',
-        url: rootUrl + "/signup",
+        url: rootUrl + "/auth/addNewUser",
         contentType: 'application/json',
-        data: JSON.stringify({ "email": email, "password": password }),
+        data: JSON.stringify({ "email": email, "username": username, "password": password }),
         dataType: "json",
         success: function(resp) {
             if (resp.status === "OK") {
