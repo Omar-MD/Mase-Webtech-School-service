@@ -23,7 +23,7 @@
         <maven.compiler.version>3.11.0</maven.compiler.version>
         <maven.surefire.version>3.0.0</maven.surefire.version>
         <karate.version>1.4.1</karate.version>
-        <start-class>com.tus.cipher.MaseProjectApplication</start-class>
+        <start-class>com.tus.schoolservice.SchoolServiceApp</start-class>
     </properties>
     <dependencies>
         <dependency>
@@ -72,8 +72,16 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
-
     <build>
         <testResources>
             <testResource>
@@ -178,7 +186,7 @@
                     </includes>
                 </configuration>
             </plugin>
-             <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
@@ -187,7 +195,7 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-             <plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
@@ -204,7 +212,7 @@
                 </executions>
             </plugin>
         </plugins>
-         <pluginManagement>
+        <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
