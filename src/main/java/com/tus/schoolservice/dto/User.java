@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="user_info")
-public class UserInfo {
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,14 +25,14 @@ public class UserInfo {
 	private String password;
 
 	@NotBlank
-	private String roles;
+	private String role;
 
-	public UserInfo() {}
-	public UserInfo(String email, String name, String password, String roles) {
+	public User() {}
+	public User(String email, String name, String password, String role) {
 		this.email = email;
 		this.name = name;
 		this.password = password;
-		this.roles = roles;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -59,10 +59,10 @@ public class UserInfo {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getRoles() {
-		return roles;
+	public String getRole() {
+		return role;
 	}
-	public void setRoles(String roles) {
-		this.roles = roles;
+	public void setRoles(String role) {
+		this.role = role;
 	}
 }

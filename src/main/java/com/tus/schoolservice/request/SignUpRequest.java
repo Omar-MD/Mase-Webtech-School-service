@@ -1,4 +1,4 @@
-package com.tus.schoolservice.dto;
+package com.tus.schoolservice.request;
 
 public class SignUpRequest {
 

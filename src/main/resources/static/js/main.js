@@ -42,9 +42,7 @@ $(document).ready(function() {
 
     // Logout
     $('#logout-nav-link').on('click', function() {
-        showLogoutState();
-        homeNav("#ethos-nav-link", '#ethos-content');
-        pageNav('#home-page');
+        logout();
     });
 
     // Home Page
@@ -104,6 +102,13 @@ const showLogInState = function() {
     $('#signup-nav-link').addClass('d-none');
 }
 
+const logout = function() {
+    localStorage.clear();
+    showLogoutState();
+    homeNav("#ethos-nav-link", '#ethos-content');
+    pageNav('#home-page');
+}
+
 const showLogoutState = function() {
     $('#user-nav').addClass('d-none');
     $('#logout-nav-link').addClass('d-none');
@@ -118,12 +123,14 @@ const authenticate = function() {
 
     $.ajax({
         type: 'POST',
-        url: rootUrl + "/auth/authenticate",
+        url: rootUrl + "/authenticate",
         contentType: 'application/json',
         data: JSON.stringify({ "username": username, "password": password }),
         dataType: "json",
         success: function(resp) {
             if (resp.status === "OK") {
+                localStorage.setItem('token', resp.data.token);
+                localStorage.setItem('role', resp.data.role);
                 showLogInState();
                 homeNav('#user-nav-link', '#user-content');
                 pageNav('#home-page');
@@ -151,7 +158,7 @@ const signup = function() {
 
     $.ajax({
         type: 'POST',
-        url: rootUrl + "/auth/addNewUser",
+        url: rootUrl + "/addNewUser",
         contentType: 'application/json',
         data: JSON.stringify({ "email": email, "username": username, "password": password }),
         dataType: "json",
