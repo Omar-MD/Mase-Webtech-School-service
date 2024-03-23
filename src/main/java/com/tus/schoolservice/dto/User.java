@@ -1,19 +1,13 @@
 package com.tus.schoolservice.dto;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="user_info")
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class User extends BaseEntity{
 
 	@NotBlank
 	private String email;
@@ -29,18 +23,13 @@ public class User {
 
 	public User() {}
 	public User(String email, String name, String password, String role) {
+		super();
 		this.email = email;
 		this.name = name;
 		this.password = password;
 		this.role = role;
 	}
 
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getEmail() {
 		return email;
 	}
