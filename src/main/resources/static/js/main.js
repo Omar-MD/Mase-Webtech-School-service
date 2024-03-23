@@ -1,15 +1,32 @@
 
 const rootUrl = "http://localhost:8082";
 
+const UserRole = {
+    USER: "User",
+    PARENT: "PARENT",
+    ADMIN: "ADMIN"
+}
+
 // Application Event Handlers
 $(document).ready(function() {
-
-    // User Home
-    $('#user-nav-link').on('click', function() {
-        homeNav("#user-nav-link", '#user-content');
+    
+    // Handle Page Refresh
+    if (localStorage.getItem('username')) {
+        console.log('Logged in')
+        let role = localStorage.getItem('role');
+        showLogInState();
+        createHomeContent(role);
+        if(role === UserRole.PARENT){
+            homeNav('#parent-home-nav-link', '#parent-home');
+        }else{
+            homeNav('#admin-home-nav-link', '#admin-home');
+        }
         pageNav('#home-page');
-    });
-
+        
+    }else{    
+        createHomeContent(UserRole.USER);
+    }
+    
     // Login
     $('#login-nav-link').on('click', function() {
         pageNav('#login-page');
@@ -44,42 +61,56 @@ $(document).ready(function() {
     $('#logout-nav-link').on('click', function() {
         logout();
     });
-
-    // Home Page
+    
+    // Home page
     $('#logo').on('click', function() {
-        homeNav("#ethos-nav-link", '#ethos-content');
+        pageNav('#home-page');
+    });
+    
+    // Home Sidebar links
+    $('#sidebar').on('click', '.aside-link', function() {
+        const linkId = $(this).attr('id');
+
+        switch (linkId) {
+            /*User Links*/
+            case 'ethos-nav-link':
+                homeNav("#ethos-nav-link", '#ethos-content');
+                break;
+            case 'curriculum-nav-link':
+                homeNav("#curriculum-nav-link", '#curriculum-content');
+                break;
+            case 'admission-nav-link':
+                homeNav("#admission-nav-link", '#admission-content');
+                break;
+            case 'tuition-nav-link':
+                homeNav("#tuition-nav-link", '#tuition-content');
+                break;
+            case 'contact-nav-link':
+                homeNav("#contact-nav-link", '#contact-content');
+                break;
+            
+             /*Parent Links*/
+             case 'parent-home-nav-link':
+                homeNav("#parent-home-nav-link", '#parent-home');
+                break;
+            case 'parent-messages-nav-link':
+                homeNav("#parent-messages-nav-link", '#parent-messages');
+                break;
+            case 'registration-nav-link':
+                homeNav("#registration-nav-link", '#registration');
+                break;
+            case 'submitted-applications-nav-link':
+                homeNav("#submitted-applications-nav-link", '#submitted-applications');
+                break;
+                
+             /*Admin Links*/
+             
+            default:
+                break;
+        }
         pageNav('#home-page');
     });
 
-    // About Us
-    $("#ethos-nav-link").on('click', function() {
-        homeNav("#ethos-nav-link", '#ethos-content');
-        pageNav('#home-page');
-    });
-
-    // Curriculm
-    $("#curriculum-nav-link").on('click', function() {
-        homeNav("#curriculum-nav-link", '#curriculum-content');
-        pageNav('#home-page');
-    });
-
-    // Admission Process
-    $("#admission-nav-link").on('click', function() {
-        homeNav("#admission-nav-link", '#admission-content');
-        pageNav('#home-page');
-    });
-
-    // Tuition Fees
-    $("#tuition-nav-link").on('click', function() {
-        homeNav("#tuition-nav-link", '#tuition-content');
-        pageNav('#home-page');
-    });
-
-    // Contact Us
-    $("#contact-nav-link").on('click', function() {
-        homeNav("#contact-nav-link", '#contact-content');
-        pageNav('#home-page');
-    });
 });
 
 const homeNav = function(navID, pageID) {
@@ -105,6 +136,7 @@ const showLogInState = function() {
 const logout = function() {
     localStorage.clear();
     showLogoutState();
+    createHomeContent(UserRole.USER);
     homeNav("#ethos-nav-link", '#ethos-content');
     pageNav('#home-page');
 }
@@ -131,8 +163,10 @@ const authenticate = function() {
             if (resp.status === "OK") {
                 localStorage.setItem('token', resp.data.token);
                 localStorage.setItem('role', resp.data.role);
+                localStorage.setItem('username', username);
                 showLogInState();
-                homeNav('#user-nav-link', '#user-content');
+                createHomeContent(resp.data.role);
+                homeNav('#parent-home-nav-link', '#parent-home');
                 pageNav('#home-page');
             } else {
                 $('#loginMsg').removeClass().addClass("alert alert-danger").html(`<strong>Error!</strong> ${resp.errorMsg}<br/>`).show();
