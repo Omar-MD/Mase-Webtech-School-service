@@ -35,11 +35,10 @@ public class SecurityConfig{
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests( auth -> auth
-                		.requestMatchers("/admin/**").authenticated()
-                		.requestMatchers("/parent/**").authenticated()
-                		.anyRequest().permitAll()
-                )
+                .authorizeHttpRequests( auth -> {
+                	auth.requestMatchers("/student/**").authenticated();
+                	auth.anyRequest().permitAll();
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
             	.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

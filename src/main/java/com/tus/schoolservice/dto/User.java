@@ -1,28 +1,37 @@
 package com.tus.schoolservice.dto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 
-@SuppressWarnings("serial")
 @Entity
-@Table(name="user_info")
-public class User extends BaseEntity{
+@Table(name="users")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User {
 
-	@NotBlank
-	private String email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotBlank
+	@Column(name = "name")
 	private String name;
 
-	@NotBlank
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "password")
 	private String password;
 
-	@NotBlank
+	@Column(name = "role")
 	private String role;
 
 	public User() {}
-	public User(String email, String name, String password, String role) {
+	public User(String name, String email, String password, String role) {
 		super();
 		this.email = email;
 		this.name = name;
@@ -30,6 +39,13 @@ public class User extends BaseEntity{
 		this.role = role;
 	}
 
+    // Getters & Setters
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getEmail() {
 		return email;
 	}

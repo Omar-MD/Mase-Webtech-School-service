@@ -11,9 +11,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tus.schoolservice.dao.AdminRepo;
+import com.tus.schoolservice.dao.ParentRepo;
 import com.tus.schoolservice.dao.UserInfoRepo;
+import com.tus.schoolservice.dto.Admin;
+import com.tus.schoolservice.dto.Constants;
+import com.tus.schoolservice.dto.Parent;
 import com.tus.schoolservice.dto.User;
 import com.tus.schoolservice.dto.UserRole;
 import com.tus.schoolservice.request.AuthRequest;
@@ -24,27 +30,25 @@ import com.tus.schoolservice.service.JwtService;
 import com.tus.schoolservice.service.UserInfoService;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
-
-	private static final String EMAIL_REGX = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-	private static final String INVALID_EMAIL = "Invalid email!";
-	private static final String EMAIL_TAKEN = "Email already in use!";
-	private static final String ACC_CREATED = "Account Created!";
-	private static final String NOT_SECURE = "Password insecure!";
-	private static final String INVALID_CRED = "Unathorized: Invalid email or password!";
 
 	private AuthenticationManager authenticationManager;
 	private UserInfoService userService;
 	private JwtService jwtService;
 	private PasswordEncoder encoder;
 	private UserInfoRepo userRepo;
+	private ParentRepo parentRepo;
+	private AdminRepo adminRepo;
 
-	public AuthController(AuthenticationManager authenticationManager, UserInfoService userService, JwtService jwtService, PasswordEncoder encoder, UserInfoRepo userRepo) {
+	public AuthController(AuthenticationManager authenticationManager, UserInfoService userService, JwtService jwtService, PasswordEncoder encoder, UserInfoRepo userRepo, ParentRepo parentRepo, AdminRepo adminRepo) {
 		this.authenticationManager = authenticationManager;
 		this.userService = userService;
 		this.jwtService = jwtService;
 		this.encoder = encoder;
 		this.userRepo = userRepo;
+		this.parentRepo = parentRepo;
+		this.adminRepo = adminRepo;
 	}
 
 	@PostMapping("/authenticate")
@@ -59,11 +63,11 @@ public class AuthController {
 				return ApiResponse.ok(HttpStatus.OK.value(), resp);
 
 			} else {
-				return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), INVALID_CRED);
+				return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), Constants.INVALID_CRED.getValue());
 
 			}
 		} catch (BadCredentialsException ex) {
-			return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), INVALID_CRED);
+			return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), Constants.INVALID_CRED.getValue());
 		}
 	}
 
@@ -71,27 +75,34 @@ public class AuthController {
 	public ApiResponse<String> addNewUser(@RequestBody SignUpRequest userInfo) {
 		String email = userInfo.getEmail();
 
+		// Validation
 		if (!isValidEmail(email)) {
-			return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), INVALID_EMAIL);
+			return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), Constants.INVALID_EMAIL.getValue());
 		}
-
-		Optional<User> userOpt = userRepo.findByEmail(email);
+		Optional<User> userOpt = userRepo.findByName(userInfo.getUsername());
 		if (userOpt.isPresent()) {
-			return ApiResponse.error(HttpStatus.CONFLICT.value(), EMAIL_TAKEN);
+			return ApiResponse.error(HttpStatus.CONFLICT.value(), Constants.USERNAME_TAKEN.getValue());
 		}
-
 		if(!isPasswordSecure(userInfo.getPassword())){
-			return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), NOT_SECURE);
+			return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), Constants.NOT_SECURE.getValue());
 		}
 
-		User user = new User();
-		user.setEmail(email);
-		user.setName(userInfo.getUsername());
-		user.setPassword(encoder.encode(userInfo.getPassword()));
-		user.setRoles(getRole(email));
+		String role = getRole(email);
+		String name = userInfo.getUsername();
+		String password = encoder.encode(userInfo.getPassword());
 
-		userRepo.save(user);
-		return ApiResponse.ok(HttpStatus.CREATED.value(), ACC_CREATED);
+		// Create Parent
+		if(role.equals(UserRole.PARENT.toString())) {
+			Parent newParent = new Parent(name, email, password, UserRole.PARENT.toString(), "Phone", "Address");
+			parentRepo.save(newParent);
+
+		}else {
+			// Create Admin
+			Admin newAdmin = new Admin(name, email, password, UserRole.ADMIN.toString());
+			adminRepo.save(newAdmin);
+		}
+
+		return ApiResponse.ok(HttpStatus.CREATED.value(), Constants.ACC_CREATED.getValue());
 	}
 
 
@@ -100,10 +111,10 @@ public class AuthController {
     }
 
     public boolean isValidEmail(String email) {
-    	return Pattern.matches(EMAIL_REGX, email);
+    	return Pattern.matches(Constants.EMAIL_REGX.getValue(), email);
     }
 
     public String getRole(String email) {
-    	return email.contains("@ss-admin.com")? UserRole.ADMIN.toString(): UserRole.PARENT.toString();
+    	return email.contains(Constants.ADMIN_EMAIL.getValue())? UserRole.ADMIN.toString(): UserRole.PARENT.toString();
     }
 }

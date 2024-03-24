@@ -1,4 +1,4 @@
-package com.tus.schoolservice.dto;
+package com.tus.schoolservice.dto.student;
 
 public enum MartialArtsLevel {
     NOVICE("Novice"),

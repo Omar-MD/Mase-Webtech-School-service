@@ -7,26 +7,37 @@ const UserRole = {
     ADMIN: "ADMIN"
 }
 
+const RegistrationStage = {
+    SUBMITTED: "SUBMITTED",
+    UNDER_REVIEW: "UNDER_REVIEW",
+    APPROVED: "APPROVED",
+    PAYMENT_PENDING: "PAYMENT_PENDING",
+    ENROLLED: "ENROLLED",
+    REJECTED: "REJECTED",
+    CANCELLED: "CANCELLED",
+    ADDED_TO_WAITING_LIST: "ADDED_TO_WAITING_LIST"
+}
+
 // Application Event Handlers
 $(document).ready(function() {
-    
+
     // Handle Page Refresh
     if (localStorage.getItem('username')) {
         console.log('Logged in')
         let role = localStorage.getItem('role');
         showLogInState();
         createHomeContent(role);
-        if(role === UserRole.PARENT){
+        if (role === UserRole.PARENT) {
             homeNav('#parent-home-nav-link', '#parent-home');
-        }else{
+        } else {
             homeNav('#admin-home-nav-link', '#admin-home');
         }
         pageNav('#home-page');
-        
-    }else{    
+
+    } else {
         createHomeContent(UserRole.USER);
     }
-    
+
     // Login
     $('#login-nav-link').on('click', function() {
         pageNav('#login-page');
@@ -61,12 +72,12 @@ $(document).ready(function() {
     $('#logout-nav-link').on('click', function() {
         logout();
     });
-    
+
     // Home page
     $('#logo').on('click', function() {
         pageNav('#home-page');
     });
-    
+
     // Home Sidebar links
     $('#sidebar').on('click', '.aside-link', function() {
         const linkId = $(this).attr('id');
@@ -88,9 +99,9 @@ $(document).ready(function() {
             case 'contact-nav-link':
                 homeNav("#contact-nav-link", '#contact-content');
                 break;
-            
-             /*Parent Links*/
-             case 'parent-home-nav-link':
+
+            /*Parent Links*/
+            case 'parent-home-nav-link':
                 homeNav("#parent-home-nav-link", '#parent-home');
                 break;
             case 'parent-messages-nav-link':
@@ -102,9 +113,9 @@ $(document).ready(function() {
             case 'submitted-applications-nav-link':
                 homeNav("#submitted-applications-nav-link", '#submitted-applications');
                 break;
-                
-             /*Admin Links*/
-             
+
+            /*Admin Links*/
+
             default:
                 break;
         }
