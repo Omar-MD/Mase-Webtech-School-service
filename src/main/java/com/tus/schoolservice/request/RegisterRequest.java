@@ -1,21 +1,39 @@
 package com.tus.schoolservice.request;
 
-public class RegisterRequest {
-	String parentEmail;
-	String studentName;
-	String studentMartialLevel;
-	String	studentCodingLevel;
+import java.time.LocalDate;
 
-	public String getParentEmail() {
-		return parentEmail;
+import com.tus.schoolservice.dto.student.CodingLevel;
+import com.tus.schoolservice.dto.student.Gender;
+import com.tus.schoolservice.dto.student.MartialArtsLevel;
+
+public class RegisterRequest {
+	String parentName;
+	String studentName;
+	MartialArtsLevel studentMartialLevel;
+	CodingLevel	studentCodingLevel;
+    LocalDate studentDateOfBirth;
+    Gender studentGender;
+    String studentMedicalInformation;
+
+	public String getParentName() {
+		return parentName;
 	}
 	public String getStudentName() {
 		return studentName;
 	}
-	public String getStudentMartialLevel() {
+	public MartialArtsLevel getStudentMartialLevel() {
 		return studentMartialLevel;
 	}
-	public String getStudentCodingLevel() {
+	public CodingLevel getStudentCodingLevel() {
 		return studentCodingLevel;
+	}
+	public LocalDate getStudentDateOfBirth() {
+		return studentDateOfBirth;
+	}
+	public Gender getStudentGender() {
+		return studentGender;
+	}
+	public String getStudentMedicalInformation() {
+		return studentMedicalInformation;
 	}
 }

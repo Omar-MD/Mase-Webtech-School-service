@@ -3,9 +3,11 @@
 const createHomeContent = function(role) {
     const sidebar = $('#sidebar');
     const homeContent = $('#home-content-container');
+    const pageHeader = $('#page-header');
     homeContent.html('');
     sidebar.html('');
-
+    pageHeader.html('');
+    
     switch (role) {
         case UserRole.ADMIN:
             sidebar.html(`
@@ -13,11 +15,12 @@ const createHomeContent = function(role) {
             );
             break;
         case UserRole.PARENT:
+            pageHeader.text('Parent Page');
             sidebar.html(`
                 <hr class="pt-1 pb-1 style-hr"/>
                 <a class="aside-link" id="parent-home-nav-link"><i class="fa-solid fa-home me-2"></i>Parent Home</a>
-                <a class="aside-link" id="parent-messages-nav-link"><i class="fa-solid fa-envelope me-2"></i>Parent Messages</a>
                 <a class="aside-link" id="registration-nav-link"><i class="fa-solid fa-child me-2"></i>Registration</a>
+                <a class="aside-link" id="parent-messages-nav-link"><i class="fa-solid fa-envelope me-2"></i>Parent Messages</a>
                 <a class="aside-link" id="submitted-applications-nav-link"><i class="fa-solid fa-tasks me-2"></i>Submitted Applications</a>
             `);
             homeContent.html(`
@@ -28,6 +31,7 @@ const createHomeContent = function(role) {
             `);
             break;
         case UserRole.USER:
+            pageHeader.text('Home Page');
             sidebar.html(`
                 <hr class="pt-1 pb-1 style-hr"/>
                 <a class="aside-link" id="ethos-nav-link"><i class="fa-solid fa-info-circle me-2"></i>Ethos</a>
@@ -46,76 +50,6 @@ const createHomeContent = function(role) {
     }
 }
 
-const parentHome = function() {
-    let username = localStorage.getItem('username');
-    username = username.charAt(0).toUpperCase() + username.slice(1); 
-    
-    return `<main class="col-md-12 home-content" id="parent-home">
-                        <h2 class="text-center">Welcome, ${username}!</h2>
-                        <p class="lead text-center">Embrace the shadows and wield the power of knowledge.</p>
-                        <div class="row">
-                            <div class="col-md-3 offset-md-2">
-                                <div class="card text-white bg-dark mb-3">
-                                    <div class="card-header">Registration Process</div>
-                                    <div class="card-body">
-                                        <h5 class="card-title">Welcome to the Martial Arts Coding School!</h5>
-                                        <p class="card-text">The registration process involves the following stages:</p>
-                                        <ul>
-                                            <li><strong>Parent Sign-Up:</strong> Create a parent account to begin the application process.</li>
-                                            <li><strong>Application Submission:</strong> Submit your child's application for admission.</li>
-                                            <li><strong>Application Review:</strong> Our dark council reviews your application.</li>
-                                            <li><strong>Approval/Rejection:</strong> Await the decision on your child's admission.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="card text-white bg-dark mb-3">
-                                            <div class="card-header">Track Submitted Applications</div>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Track the Progress of Your Applications</h5>
-                                                <p class="card-text">View a timeline of your submitted applications and their current stage in the admission process. You can also edit or delete your applications as needed.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card text-white bg-dark mb-3">
-                                            <div class="card-header">School Messages</div>
-                                            <div class="card-body">
-                                                <h5 class="card-title">Receive School Announcements and Messages</h5>
-                                                <p class="card-text">Stay informed with important announcements from the school and receive individual messages from other parents.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </main>
-         `;
-}
-
-const parentMessages = function() {
-    return `<main class="col-md-12 home-content" id="parent-messages">
-                            <h2 class="text-center">Parent Messages</h2>
-                        </main>
-         `;
-}
-
-const registration = function() {
-    return `<main class="col-md-12 home-content" id="registration">
-                            <h2 class="text-center">Registration</h2>
-                        </main>
-         `;
-}
-
-const submittedApplications = function() {
-    return `<main class="col-md-12 home-content" id="submitted-applications">
-                            <h2 class="text-center">Submitted Applications</h2>
-                        </main>
-         `;
-}
 
 
 const ethos = function() {

@@ -8,15 +8,33 @@ const UserRole = {
 }
 
 const RegistrationStage = {
-    SUBMITTED: "SUBMITTED",
-    UNDER_REVIEW: "UNDER_REVIEW",
-    APPROVED: "APPROVED",
-    PAYMENT_PENDING: "PAYMENT_PENDING",
-    ENROLLED: "ENROLLED",
-    REJECTED: "REJECTED",
-    CANCELLED: "CANCELLED",
-    ADDED_TO_WAITING_LIST: "ADDED_TO_WAITING_LIST"
-}
+    SUBMITTED: { value: "SUBMITTED", description: "You've thrown your child into the ring. Good luck with that." },
+    UNDER_REVIEW: { value: "UNDER_REVIEW", description: "The elders are contemplating whether your sacrifice is worthy." },
+    APPROVED: { value: "APPROVED", description: "Congratulations! Your offspring has been deemed suitable for torment." },
+    PAYMENT_PENDING: { value: "PAYMENT_PENDING", description: "Time to open your coffers and empty your pockets." },
+    ENROLLED: { value: "ENROLLED", description: "Your fate is sealed. Prepare for the onslaught of expenses." },
+    REJECTED: { value: "REJECTED", description: "Denied! Your child failed to impress the merciless judges." },
+    CANCELLED: { value: "CANCELLED", description: "Back to the drawing board. Maybe try something less soul-crushing?" },
+    ADDED_TO_WAITING_LIST: { value: "ADDED_TO_WAITING_LIST", description: "Your child is now part of the vast sea of hopefuls, waiting for their turn to suffer." }
+};
+
+const CodingLevel = {
+    ILLETERATE: { value: "ILLETERATE", description: "Your child is yet to grasp the alphabet, let alone code. Maybe it's for the best." },
+    INITIATE: { value: "INITIATE", description: "The journey into the dark abyss of coding begins. Abandon hope, all ye who enter here." },
+    ACOLYTE: { value: "ACOLYTE", description: "Your child has taken the first steps into the forbidden realm of code. There's no turning back now." },
+    JUNIOR_DEVELOPER: { value: "JUNIOR_DEVELOPER", description: "Your offspring has ascended to the ranks of the code monkeys. Brace yourself for the endless debugging." },
+    SENIOR_DEVELOPER: { value: "SENIOR_DEVELOPER", description: "Your child has reached the echelons of coding mastery. The bugs fear them, the deadlines bow to them." },
+    PRINCIPAL_DEVELOPER: { value: "PRINCIPAL_DEVELOPER", description: "Your offspring is now among the coding deities. They shape worlds with their keystrokes, and summon demons with their semicolons." }
+};
+
+const MartialArtsLevel = {
+    NOVICE: { value: "NOVICE", description: "Your child is a mere fledgling in the art of combat. Expect a lot of flailing and accidental kicks." },
+    APPRENTICE: { value: "APPRENTICE", description: "The journey of a thousand kicks begins with a single punch. Or was it the other way around?" },
+    JOURNEYMAN: { value: "JOURNEYMAN", description: "Your offspring is on the path to mastery. Soon, they'll be breaking boards and hearts." },
+    WARRIOR: { value: "WARRIOR", description: "The battlefield beckons, and your child answers. Shields up, it's time for war!" },
+    MASTER: { value: "MASTER", description: "Your child has achieved mastery over their body and mind. Beware, for they are a force to be reckoned with." },
+    GRAND_MASTER: { value: "GRAND_MASTER", description: "Your offspring is now a legend among mortals. The stuff of myths and legends. Bow before their might!" }
+};
 
 // Application Event Handlers
 $(document).ready(function() {
@@ -112,6 +130,7 @@ $(document).ready(function() {
                 break;
             case 'submitted-applications-nav-link':
                 homeNav("#submitted-applications-nav-link", '#submitted-applications');
+                getSubmissions()
                 break;
 
             /*Admin Links*/
@@ -122,6 +141,12 @@ $(document).ready(function() {
         pageNav('#home-page');
     });
 
+    // Parent Functionality
+    $("#registerStudent-btn").on('click', function(event) {
+        event.preventDefault();
+        registerStudent();
+    });
+    
 });
 
 const homeNav = function(navID, pageID) {
@@ -166,7 +191,7 @@ const authenticate = function() {
 
     $.ajax({
         type: 'POST',
-        url: rootUrl + "/authenticate",
+        url: rootUrl + "/auth/authenticate",
         contentType: 'application/json',
         data: JSON.stringify({ "username": username, "password": password }),
         dataType: "json",
@@ -203,7 +228,7 @@ const signup = function() {
 
     $.ajax({
         type: 'POST',
-        url: rootUrl + "/addNewUser",
+        url: rootUrl + "/auth/addNewUser",
         contentType: 'application/json',
         data: JSON.stringify({ "email": email, "username": username, "password": password }),
         dataType: "json",
