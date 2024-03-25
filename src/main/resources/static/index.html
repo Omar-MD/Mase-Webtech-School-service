@@ -11,35 +11,42 @@
 </head>
 
 <body>
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg sticky-top" id="nav-bar">
+        <div class="container-fluid">
+            <a class="navbar-brand" id="logo">
+                <img src="img/book-logo.svg" alt="Logo" width="45" height="38" class="d-inline-block align-text-top">
+                <span id="page-header"></span>
+            </a>
+            <div class="d-flex align-items-center ms-auto">
+                <a class="aside-link" id="login-nav-link" href="#">
+                    <i class="fa fa-sign-in"></i> Login
+                </a>
+                <a class="aside-link" id="signup-nav-link" href="#">
+                    <i class="fas fa-user-plus"></i> SignUp
+                </a>
+                <a class="aside-link d-none" id="logout-nav-link" href="#">
+                    <i class="fa fa-sign-out"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Toast -->
+    <div aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container bottom-0 end-0 p-3 position-fixed" id="toastContainer">
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <div class="container-fluid overflow-hidden">
-        <div class="row pl-0 overflow-hidden">
-
-            <!--Navbar-->
-            <nav class="navbar navbar-expand-lg sticky-top" id="nav-bar">
-                <div class="container-fluid">
-                    <a class="navbar-brand" id="logo">
-                        <img src="img/book-logo.svg" alt="Logo" width="45" height="38"
-                            class="d-inline-block align-text-top">
-                        <span id="page-header"></span>
-                    </a>
-                    <div class="d-flex align-items-center ms-auto">
-                        <a class="aside-link" id="login-nav-link" href="#">
-                            <i class="fa fa-sign-in"></i> Login
-                        </a>
-                        <a class="aside-link" id="signup-nav-link" href="#">
-                            <i class="fas fa-user-plus"></i> SignUp
-                        </a>
-                        <a class="aside-link d-none" id="logout-nav-link" href="#">
-                            <i class="fa fa-sign-out"></i> Logout
-                        </a>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Home-->
-            <section class="container-fluid main-page" id="home-page">
+        <div class="row pl-0">
+            
+            <!-- Home -->
+            <section class="main-page" id="home-page">
                 <div class="row">
-                    <aside class="col-md-2  aside text-center" id="sidebar">
+                    <aside class="col-md-2 aside text-center" id="sidebar">
                     </aside>
                     <div class="col-md-10 response-window overflow-auto" id="home-content-container">
                     </div>
@@ -47,116 +54,16 @@
             </section>
 
             <!-- Signup -->
-            <section class="container-fluid response-window main-page d-none" id="signup-page">
-                <div class="row">
-
-                    <div class="col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
-                        <div class="image-container">
-                            <img src="img/signup-bg.png" alt="login-background">
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 d-flex align-items-center">
-                        <div class="card-body p-4 p-lg-5 text-black">
-
-                            <!-- Sign Up Form -->
-                            <form class="form-container">
-                                <div class="d-flex align-items-center mb-3 pb-1">
-                                    <img src="img/book-logo.svg" alt="Logo" width="45" height="38"
-                                        class="d-inline-block align-text-top">
-                                    <span class="h1 fw-bold mb-0">Sign Up</span>
-                                </div>
-
-                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create your account</h5>
-
-                                <div class="form-outline mb-2">
-                                    <input type="email" id="sign-up-email" class="form-control form-control-lg"
-                                        required />
-                                    <label class="form-label" for="sign-up-email">Email address</label>
-                                </div>
-
-                                <div class="form-outline mb-2">
-                                    <input type="text" id="sign-up-username" class="form-control form-control-lg"
-                                        required />
-                                    <label class="form-label" for="sign-up-username">Username</label>
-                                </div>
-
-                                <div class="form-outline mb-2">
-                                    <input type="password" id="sign-up-password" class="form-control form-control-lg"
-                                        required />
-                                    <label class="form-label" for="sign-up-password">Password</label>
-                                </div>
-
-                                <div class="form-outline mb-2">
-                                    <input type="password" id="confirm-password" class="form-control form-control-lg"
-                                        required />
-                                    <label class="form-label" for="confirm-password">Confirm Password</label>
-                                </div>
-
-                                <div class="pt-1 mb-2">
-                                    <button class="btn btn-dark btn-lg btn-block" type="button" id="signup-button">Sign
-                                        Up</button>
-                                </div>
-                                <p class="mb-1 pb-lg-1 ">Already have an account? <a id="signup-login-link"
-                                        class="page-link">Login here</a></p>
-                                <div id="signupMsg" style="display: none;"></div>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
+            <section class="main-page d-none" id="signup-page">
             </section>
 
             <!--Login-->
-            <section class="container-fluid response-window main-page d-none" id="login-page">
-                <div class="row">
-
-                    <div class="col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
-                        <div class="image-container">
-                            <img src="img/login-bg.png" alt="login-background">
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 d-flex align-items-center">
-                        <div class="card-body p-4 p-lg-5 text-black">
-                            <!-- Log In Form -->
-                            <form class="form-container">
-                                <div class="d-flex align-items-center mb-3 pb-1">
-                                    <img src="img/book-logo.svg" alt="Logo" width="45" height="38"
-                                        class="d-inline-block align-text-top">
-                                    <span class="h1 fw-bold mb-0">Login</span>
-                                </div>
-
-                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
-
-                                <div class="form-outline mb-4">
-                                    <input type="text" id="login-username" class="form-control form-control-lg" />
-                                    <label class="form-label" for="login-username">Username</label>
-                                </div>
-
-                                <div class="form-outline mb-4">
-                                    <input type="password" id="login-password" class="form-control form-control-lg" />
-                                    <label class="form-label" for="login-password">Password</label>
-                                </div>
-
-                                <div class="pt-1 mb-4">
-                                    <button class="btn btn-dark btn-lg btn-block" type="button"
-                                        id="login-button">Login</button>
-                                </div>
-                                <p class="mb-5 pb-lg-2">Don't have an account? <a id="login-signup-link"
-                                        class="page-link">Register here</a></p>
-                            </form>
-                            <div id="loginMsg" style="display: none;"></div>
-                        </div>
-                    </div>
-
-                </div>
+            <section class="main-page d-none" id="login-page">
             </section>
-
         </div>
     </div>
-    
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/304174d8a3.js" crossorigin="anonymous"></script>
@@ -164,5 +71,7 @@
     <script src="js/home.js"></script>
     <script src="js/parent.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/event-handlers.js"></script>
 </body>
+
 </html>

@@ -1,59 +1,226 @@
 'use strict';
 
-const createHomeContent = function(role) {
-    const sidebar = $('#sidebar');
-    const homeContent = $('#home-content-container');
-    const pageHeader = $('#page-header');
-    homeContent.html('');
-    sidebar.html('');
-    pageHeader.html('');
-    
-    switch (role) {
-        case UserRole.ADMIN:
-            sidebar.html(`
-                 `
-            );
-            break;
-        case UserRole.PARENT:
-            pageHeader.text('Parent Page');
-            sidebar.html(`
-                <hr class="pt-1 pb-1 style-hr"/>
-                <a class="aside-link" id="parent-home-nav-link"><i class="fa-solid fa-home me-2"></i>Parent Home</a>
-                <a class="aside-link" id="registration-nav-link"><i class="fa-solid fa-child me-2"></i>Registration</a>
-                <a class="aside-link" id="parent-messages-nav-link"><i class="fa-solid fa-envelope me-2"></i>Parent Messages</a>
-                <a class="aside-link" id="submitted-applications-nav-link"><i class="fa-solid fa-tasks me-2"></i>Submitted Applications</a>
-            `);
-            homeContent.html(`
-                ${parentHome()}
-                ${parentMessages()}
-                ${registration()}
-                ${submittedApplications()}
-            `);
-            break;
-        case UserRole.USER:
-            pageHeader.text('Home Page');
-            sidebar.html(`
-                <hr class="pt-1 pb-1 style-hr"/>
-                <a class="aside-link" id="ethos-nav-link"><i class="fa-solid fa-info-circle me-2"></i>Ethos</a>
-                <a class="aside-link" id="curriculum-nav-link"><i class="fa-solid fa-book me-2"></i>Curriculum</a>
-                <a class="aside-link" id="admission-nav-link"><i class="fa-solid fa-clipboard-check me-2"></i>Admission</a>
-                <a class="aside-link" id="tuition-nav-link"><i class="fa-solid fa-dollar-sign me-2"></i>Tuition</a>
-                <a class="aside-link" id="contact-nav-link"><i class="fa-solid fa-envelope me-2"></i>Contact</a>
-            `);
-            homeContent.html(`
-                ${contact()}
-                ${tuition()}
-                ${admission()}
-                ${curriculum()}
-                ${ethos()}
-            `);
-    }
+
+/**
+ *  PARENT HOME
+ */
+
+
+const parentHome = function() {
+    let username = localStorage.getItem('username');
+    username = username.charAt(0).toUpperCase() + username.slice(1);
+    return `<main class="home-content" id="parent-home">
+                        <h2 class="text-center">Welcome, ${username}!</h2>
+                        <p class="lead text-center">Embrace the shadows and wield the power of knowledge.</p>
+                        <div class="container">
+                            <div class="row justify-content-center align-items-center p-3 m-3">
+                                 <div class="col-md-8 card text-white bg-dark">
+                                    <div class="card-header">Registration Process</div>
+                                    <div class="card-body">
+                                        <h5 class ="card-title">Welcome to the Martial Arts Coding School!</h5>
+                                        <p class="card-text">The registration process involves the following stages:</p>
+                                        <ul>
+                                            <li><strong>Parent Sign-Up:</strong> Create a parent account to begin the application process.</li>
+                                            <li><strong>Application Submission:</strong> Submit your child's application for admission.</li>
+                                            <li><strong>Application Review:</strong> Our dark council reviews your application.</li>
+                                            <li><strong>Approval/Rejection:</strong> Await the decision on your child's admission.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center p-3">
+                                  <div class="col-md-4 card text-white bg-dark m-1">
+                                        <div class="card-header">Track Submitted Applications</div>
+                                        <div class="card-body">
+                                            <h6 class="card-title">Track the Progress of Your Applications</h6>
+                                            <p class="card-text">View a timeline of your submitted applications and their current stage in the admission process. You can also edit or delete your applications as needed.</p>
+                                    </div>
+                                </div>
+                                 <div class="col-md-4 card text-white bg-dark m-1">
+                                        <div class="card-header">School Messages</div>
+                                        <div class="card-body">
+                                            <h6 class="card-title">Receive School Announcements and Messages</h6>
+                                            <p class="card-text">Stay informed with important announcements from the school and receive individual messages from other parents.</p>
+                                        </div>
+                                </div>
+                            </div>
+                    </div>
+                </main>`;
 }
 
+const registration = function() {
+    let username = localStorage.getItem('username');
+    return `<main class="home-content d-none" id="registration">
+                       <h2 class="text-center">Student Registration</h2>
+                       <p class="lead text-center">Begin your childs registration below!</p>
+                       <div class="col-md-6 justify-content-center align-items-center mx-auto">
+                           <div class="card text-white bg-dark">
+                               <div class="card-header"><h4>Student Details</h4></div>
+                               <div class="card-body">
+                                   <form>
+                                       <div class="row mb-2">
+                                            <div class="col-6">
+                                                <label for="parentName" class="form-label">Parent's Name</label>
+                                                <input type="text" class="form-control" id="parentName" value="${username}" disabled>
+                                                <small class="form-text small-text-info">Parent's name cannot be changed</small>
+                                            </div>
+                                            <div class="col-6">
+                                                   <label for="studentName" class="form-label">Student's Full Name</label>
+                                                   <input type="text" class="form-control" id="studentName" required>
+                                            </div>
+                                       </div>
+                                         <div class="row mb-2">
+                                             <div class="col-6">
+                                                   <label for="studentMartialLevel" class="form-label">Martial Arts Level</label>
+                                                   <select class="form-select" id="studentMartialLevel" required onchange="updateDescription('martialLevelHelp', this.value, MartialArtsLevel)">
+                                                       <option value="" disabled selected>Select Martial Arts Level</option>
+                                                       <option value="NOVICE">Novice</option>
+                                                       <option value="APPRENTICE">Apprentice</option>
+                                                       <option value="JOURNEYMAN">Journeyman</option>
+                                                       <option value="WARRIOR">Warrior</option>
+                                                       <option value="MASTER">Master</option>
+                                                       <option value="GRAND_MASTER">Grand Master</option>
+                                                   </select>
+                                                   <small id="martialLevelHelp" class="form-text small-text"></small>
+                                               </div>
+                                               <div class="col-6">
+                                                   <label for="studentCodingLevel" class="form-label">Coding Level</label>
+                                                   <select class="form-select" id="studentCodingLevel" required onchange="updateDescription('codingLevelHelp', this.value, CodingLevel)">
+                                                       <option value="" disabled selected>Select Coding Level</option>
+                                                       <option value="ILLETERATE">Illiterate</option>
+                                                       <option value="INITIATE">Initiate</option>
+                                                       <option value="ACOLYTE">Acolyte</option>
+                                                       <option value="JUNIOR_DEVELOPER">Junior Developer</option>
+                                                       <option value="SENIOR_DEVELOPER">Senior Developer</option>
+                                                       <option value="PRINCIPAL_DEVELOPER">Principal Developer</option>
+                                                   </select>
+                                                   <small id="codingLevelHelp" class="form-text small-text"></small>
+                                               </div>
+                                         </div>
+                                         <div class="row mb-2">
+                                                <div class="col-6">
+                                                   <label for="studentDateOfBirth" class="form-label">Date of Birth</label>
+                                                   <input type="date" class="form-control" id="studentDateOfBirth" required>
+                                                   <small class="form-text small-text-info">Must be older than 5 years.</small>
+                                               </div>
+                                               <div class="col-6">
+                                                   <label for="studentGender" class="form-label">Gender</label>
+                                                   <select class="form-select" id="studentGender" required>
+                                                       <option value="" disabled selected>Select Gender</option>
+                                                       <option value="MALE">Male</option>
+                                                       <option value="FEMALE">Female</option>
+                                                   </select>
+                                               </div>
+                                         </div>
+                                       <div class="mb-2">
+                                           <label for="studentMedicalInformation" class="form-label">Medical Information</label>
+                                           <textarea class="form-control" id="studentMedicalInformation" rows="2"></textarea>
+                                       </div>
+                                       <button class="btn btn-primary btn-lg"  id="registerStudent-btn">Submit</button>
+                                   </form>
+                               </div>
+                           </div>
+                       </div>
+           </main>`;
+}
+
+const submittedApplications = function() {
+    return `<main class="home-content d-none px-md-4" id="submitted-applications">
+                            <h2 class="text-center">Submitted Applications</h2>
+                            <p class="lead text-center">Manage submitted applications (Edit or Retract)</p>
+                            <div class="container theScroll mt-3">
+                                 <div id="parent-submissions" class="row">
+                                </div>
+                            </div>
+                        </main>
+         `;
+}
+const parentMessages = function() {
+    return `<main class="home-content d-none" id="parent-messages">
+                            <h2 class="text-center">Parent Messages</h2>
+                        </main>
+         `;
+}
+
+const editSubmissionModal = function() {
+    return `
+        <div class="modal fade" id="editSubmissionModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Submission</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="contents">
+                        <!-- Form for editing student submission -->
+                        <form id="editSubmissionForm">
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label for="studentName" class="form-label">Student's Full Name</label>
+                                    <input type="text" class="form-control" id="m_studentName" value="" required>
+                                </div>
+                                <div class="col-6">
+                                    <label for="studentMartialLevel" class="form-label">Martial Arts Level</label>
+                                    <select class="form-select" id="m_studentMartialLevel" required>
+                                        <option>Select Martial Arts Level</option>
+                                        <option value="NOVICE">Novice</option>
+                                        <option value="APPRENTICE">Apprentice</option>
+                                        <option value="JOURNEYMAN">Journeyman</option>
+                                        <option value="WARRIOR">Warrior</option>
+                                        <option value="MASTER">Master</option>
+                                        <option value="GRAND_MASTER">Grand Master</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label for="studentCodingLevel" class="form-label">Coding Level</label>
+                                    <select class="form-select" id="m_studentCodingLevel" required>
+                                        <option value="ILLETERATE">Illiterate</option>
+                                        <option value="INITIATE">Initiate</option>
+                                        <option value="ACOLYTE">Acolyte</option>
+                                        <option value="JUNIOR_DEVELOPER">Junior Developer</option>
+                                        <option value="SENIOR_DEVELOPER">Senior Developer</option>
+                                        <option value="PRINCIPAL_DEVELOPER">Principal Developer</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="studentDateOfBirth" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="m_studentDateOfBirth" value="" required>
+                                    <small class="form-text small-text-info">Must be older than 5 years.</small>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label for="studentGender" class="form-label">Gender</label>
+                                    <select class="form-select" id="m_studentGender" required>
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="studentMedicalInformation" class="form-label">Medical Information</label>
+                                    <textarea class="form-control" id="m_studentMedicalInformation" rows="2"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="m_editSubmission-btn">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+}
+
+/**
+ *  USER HOME
+ */
 
 
 const ethos = function() {
-    return `<main class="col-md-12 home-content" id="ethos-content">
+    return `<main class="home-content" id="ethos-content">
                             <h2 class="text-center">Ethos</h2>
                             <p>Welcome to the Martial Arts Coding School, where tradition meets innovation. Our ethos
                                 revolves around the fusion of ancient martial arts wisdom with modern coding techniques.
@@ -92,7 +259,7 @@ const ethos = function() {
 }
 
 const curriculum = function() {
-    return `<main class="col-md-12 home-content d-none" id="curriculum-content">
+    return `<main class="home-content d-none" id="curriculum-content">
                         <h2 class="text-center">Curriculum</h2>
                         <h3>Martial Arts Focus</h3>
                         <p>Prepare to delve into the shadows of mastery at the Martial Arts Coding School, where our
@@ -138,7 +305,7 @@ const curriculum = function() {
 }
 
 const admission = function() {
-    return `<main class="col-md-12 home-content d-none" id="admission-content">
+    return `<main class="home-content d-none" id="admission-content">
                         <h2 class="text-center">Admission Process</h2>
                         <p>Welcome to the dark admission process of the Martial Arts Coding School. We're eager to
                             initiate you into our shadows!</p>
@@ -182,7 +349,7 @@ const admission = function() {
 }
 
 const tuition = function() {
-    return `<main class="col-md-12 home-content d-none" id="tuition-content">
+    return `<main class="home-content d-none" id="tuition-content">
                         <h2 class="text-center">Tuition Fees</h2>
                         <p>Welcome to the <strong>dark depths</strong> of tuition fees, where the shadows whisper
                             secrets of sacrifice and power. Behold the grim reality of the Martial Arts Coding
@@ -212,7 +379,7 @@ const tuition = function() {
 }
 
 const contact = function() {
-    return `<main class="col-md-12 home-content d-none" id="contact-content">
+    return `<main class="home-content d-none" id="contact-content">
                         <h2 class="text-center">Contact Us</h2>
                         <p>Welcome to the shadows of the Martial Arts Coding School's contact page. If you dare to
                             seek enlightenment or wish to entangle yourself in our web, proceed cautiously.</p>

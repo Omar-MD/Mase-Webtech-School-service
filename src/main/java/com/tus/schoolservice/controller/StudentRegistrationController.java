@@ -122,19 +122,10 @@ public class StudentRegistrationController {
 	@Transactional
 	@PreAuthorize("hasAuthority('PARENT')")
 	@DeleteMapping("/retract")
-	public ApiResponse<String> retractSubmission(@RequestBody RegisterRequest regReq) {
-		// Find submission -> Can Retract only if before "Enrolled"
-		String parentName = regReq.getParentName();
-		Optional<Parent> optParent = parentRepo.findByName(parentName);
-		if (optParent.isEmpty()) {
-			return ApiResponse.error(HttpStatus.NOT_FOUND.value(), Constants.PARENT_NOT_FOUND.getValue());
-		}
-
-		Parent parent = optParent.get();
-		List<StudentRegistration> submissions = studentRegistrationRepo.findByParent(parent);
+	public ApiResponse<String> retractSubmission(@RequestParam("submissionID") Long submissionID) {
+		List<StudentRegistration> submissions = studentRegistrationRepo.findAll();
 		Optional<StudentRegistration> submission = submissions.stream()
-				.filter(sub -> sub.getStudent().getName().equals(regReq.getStudentName())
-						&& !sub.getStatus().equals(RegistrationStatus.ENROLLED))
+				.filter(sub -> sub.getId().equals(submissionID) && !sub.getStatus().equals(RegistrationStatus.ENROLLED))
 				.findFirst();
 
 		if (submission.isEmpty()) {
@@ -163,6 +154,7 @@ public class StudentRegistrationController {
 
 			for (StudentRegistration sub : submissions) {
 				Map<String, Object> studentSubmission = new HashMap<>();
+				studentSubmission.put("submissionId", sub.getId());
 				studentSubmission.put("studentName", sub.getStudent().getName());
 				studentSubmission.put("studentMartialArt", sub.getStudent().getMartialArtsLevel());
 				studentSubmission.put("studentCodingLevel", sub.getStudent().getCodingLevel());

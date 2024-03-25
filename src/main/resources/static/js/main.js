@@ -36,158 +36,68 @@ const MartialArtsLevel = {
     GRAND_MASTER: { value: "GRAND_MASTER", description: "Your offspring is now a legend among mortals. The stuff of myths and legends. Bow before their might!" }
 };
 
-// Application Event Handlers
-$(document).ready(function() {
+const createPages = function(role) {
+    createHomeContent(role);                      // Home
+    $('#signup-page').html(signupPage());// Signup
+    $('#login-page').html(loginPage());       // Login
+}
 
-    // Handle Page Refresh
-    if (localStorage.getItem('username')) {
-        console.log('Logged in')
-        let role = localStorage.getItem('role');
-        showLogInState();
-        createHomeContent(role);
-        if (role === UserRole.PARENT) {
-            homeNav('#parent-home-nav-link', '#parent-home');
-        } else {
-            homeNav('#admin-home-nav-link', '#admin-home');
-        }
-        pageNav('#home-page');
+const createHomeContent = function(role) {
+    const pageHeader = $('#page-header');
+    const homeContent = $('#home-content-container');
+    const homeNav = $('#sidebar');
 
-    } else {
-        createHomeContent(UserRole.USER);
+    pageHeader.html('');
+    homeContent.html('');
+    homeNav.html('');
+
+    switch (role) {
+        case UserRole.ADMIN:
+            sidebar.html(`
+                 `
+            );
+            break;
+        case UserRole.PARENT:
+            pageHeader.text('Parent Page');
+            homeNav.html(`
+                <hr class="pt-1 pb-1 style-hr"/>
+                <a class="aside-link" id="parent-home-nav-link"><i class="fa-solid fa-house-user me-2"></i>Dashboard</a>
+                <a class="aside-link" id="registration-nav-link"><i class="fa-solid fa-user-plus me-2"></i>Register a Child</a>
+                <a class="aside-link" id="submitted-applications-nav-link"><i class="fa-solid fa-clipboard-check me-2"></i>Applications</a>
+                <a class="aside-link" id="parent-messages-nav-link"><i class="fa-solid fa-envelope-open-text me-2"></i>Messages</a>
+            `);
+            homeContent.html(`
+                ${parentHome()}
+                ${parentMessages()}
+                ${registration()}
+                ${submittedApplications()}
+                ${editSubmissionModal()}
+            `);
+
+            break;
+        case UserRole.USER:
+            pageHeader.text('Home Page');
+            homeNav.html(`
+                <hr class="pt-1 pb-1 style-hr"/>
+                <a class="aside-link" id="ethos-nav-link"><i class="fa-solid fa-info-circle me-2"></i>Ethos</a>
+                <a class="aside-link" id="curriculum-nav-link"><i class="fa-solid fa-book me-2"></i>Curriculum</a>
+                <a class="aside-link" id="admission-nav-link"><i class="fa-solid fa-clipboard-check me-2"></i>Admission</a>
+                <a class="aside-link" id="tuition-nav-link"><i class="fa-solid fa-dollar-sign me-2"></i>Tuition</a>
+                <a class="aside-link" id="contact-nav-link"><i class="fa-solid fa-envelope me-2"></i>Contact</a>
+            `);
+            homeContent.html(`
+                ${contact()}
+                ${tuition()}
+                ${admission()}
+                ${curriculum()}
+                ${ethos()}
+            `);
     }
-
-    // Login
-    $('#login-nav-link').on('click', function() {
-        pageNav('#login-page');
-    });
-    $('#login-page-link').on('click', function() {
-        pageNav('#login-page');
-    });
-    $('#signup-login-link').on('click', function() {
-        pageNav('#login-page');
-    });
-    $('#login-button').on('click', function(event) {
-        event.preventDefault();
-        authenticate();
-    });
-
-    // Signup
-    $('#signup-nav-link').on('click', function() {
-        pageNav('#signup-page');
-    });
-    $('#signup-page-link').on('click', function() {
-        pageNav('#signup-page');
-    });
-    $('#login-signup-link').on('click', function() {
-        pageNav('#signup-page');
-    });
-    $('#signup-button').on('click', function(event) {
-        event.preventDefault();
-        signup();
-    });
-
-    // Logout
-    $('#logout-nav-link').on('click', function() {
-        logout();
-    });
-
-    // Home page
-    $('#logo').on('click', function() {
-        pageNav('#home-page');
-    });
-
-    // Home Sidebar links
-    $('#sidebar').on('click', '.aside-link', function() {
-        const linkId = $(this).attr('id');
-
-        switch (linkId) {
-            /*User Links*/
-            case 'ethos-nav-link':
-                homeNav("#ethos-nav-link", '#ethos-content');
-                break;
-            case 'curriculum-nav-link':
-                homeNav("#curriculum-nav-link", '#curriculum-content');
-                break;
-            case 'admission-nav-link':
-                homeNav("#admission-nav-link", '#admission-content');
-                break;
-            case 'tuition-nav-link':
-                homeNav("#tuition-nav-link", '#tuition-content');
-                break;
-            case 'contact-nav-link':
-                homeNav("#contact-nav-link", '#contact-content');
-                break;
-
-            /*Parent Links*/
-            case 'parent-home-nav-link':
-                homeNav("#parent-home-nav-link", '#parent-home');
-                break;
-            case 'parent-messages-nav-link':
-                homeNav("#parent-messages-nav-link", '#parent-messages');
-                break;
-            case 'registration-nav-link':
-                homeNav("#registration-nav-link", '#registration');
-                break;
-            case 'submitted-applications-nav-link':
-                homeNav("#submitted-applications-nav-link", '#submitted-applications');
-                getSubmissions()
-                break;
-
-            /*Admin Links*/
-
-            default:
-                break;
-        }
-        pageNav('#home-page');
-    });
-
-    // Parent Functionality
-    $("#registerStudent-btn").on('click', function(event) {
-        event.preventDefault();
-        registerStudent();
-    });
-    
-});
-
-const homeNav = function(navID, pageID) {
-    $('.aside-link').removeClass('active');
-    $(navID).addClass('active');
-
-    $('.home-content').addClass('d-none');
-    $(pageID).removeClass('d-none');
-}
-
-const pageNav = function(pageID) {
-    $('.main-page').addClass('d-none');
-    $(pageID).removeClass('d-none');
-}
-
-const showLogInState = function() {
-    $('#user-nav').removeClass('d-none');
-    $('#logout-nav-link').removeClass('d-none');
-    $('#login-nav-link').addClass('d-none');
-    $('#signup-nav-link').addClass('d-none');
-}
-
-const logout = function() {
-    localStorage.clear();
-    showLogoutState();
-    createHomeContent(UserRole.USER);
-    homeNav("#ethos-nav-link", '#ethos-content');
-    pageNav('#home-page');
-}
-
-const showLogoutState = function() {
-    $('#user-nav').addClass('d-none');
-    $('#logout-nav-link').addClass('d-none');
-    $('#login-nav-link').removeClass('d-none');
-    $('#signup-nav-link').removeClass('d-none');
 }
 
 const authenticate = function() {
     let username = $('#login-username').val();
     let password = $('#login-password').val();
-    $('#loginMsg').hide();
 
     $.ajax({
         type: 'POST',
@@ -204,12 +114,14 @@ const authenticate = function() {
                 createHomeContent(resp.data.role);
                 homeNav('#parent-home-nav-link', '#parent-home');
                 pageNav('#home-page');
+                showToast("Welcome " + username);
             } else {
-                $('#loginMsg').removeClass().addClass("alert alert-danger").html(`<strong>Error!</strong> ${resp.errorMsg}<br/>`).show();
+                console.log(resp.errorMsg);
+                showToast(resp.errorMsg, "error");
             }
         },
         error: function() {
-            $('#loginMsg').removeClass().addClass("alert alert-danger").html(`<strong>Error!</strong> Server Error<br/>`).show();
+            showToast("Unexpected Server error!", "error");
         }
     });
 };
@@ -219,10 +131,9 @@ const signup = function() {
     let username = $('#sign-up-username').val();
     let password = $('#sign-up-password').val();
     let confirmPassword = $('#confirm-password').val();
-    $('#signupMsg').hide();
 
     if (confirmPassword !== password) {
-        $('#signupMsg').removeClass().addClass("alert alert-danger").html(`<strong>Error!</strong> Passwords must match!<br/>`).show();
+        showToast("Error! Passwords must match!", "error");
         return;
     }
 
@@ -234,15 +145,139 @@ const signup = function() {
         dataType: "json",
         success: function(resp) {
             if (resp.status === "OK") {
-                $('#signupMsg').removeClass().addClass("alert alert-success").html(`<strong>Success!</strong> ${resp.data}<br/>`).show();
+                showToast(resp.data);
                 pageNav('#login-page');
-
             } else {
-                $('#signupMsg').removeClass().addClass("alert alert-danger").html(`<strong>Error!</strong> ${resp.errorMsg}<br/>`).show();
+                showToast(resp.errorMsg, "error");
             }
         },
         error: function() {
-            $('#signupMsg').removeClass().addClass("alert alert-danger").html(`<strong>Error!</strong> Unexpected Server error!<br/>`).show();
+            showToast("Unexpected Server error!", "error");
         }
     });
 };
+
+const showToast = function(message, type) {
+    let toastClass = "align-items-center ";
+    let toastStatus = "";
+    if (type === "error") {
+        toastClass += "text-white bg-danger";
+        toastStatus += 'role = "alert" aria-live="assertive"';
+    } else {
+        toastClass += "text-white bg-success";
+        toastStatus += 'role = "status" aria-live="polite"';
+    }
+    const toastContainer = $('#toastContainer');
+
+    toastContainer.append(`<div class="toast ${toastClass}"  ${toastStatus} aria-atomic="true" data-autohide="false">
+          <div class="toast-header">
+                <img src="img/book-logo.svg" class="rounded me-2" style="max-width: 20px; max-height: 20px;">
+                <strong class="me-auto">Notification</strong>
+                <small class="text-muted">just now</small>
+                <button type="button"class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">${message}</div>
+    </div>`);
+
+    const newToast = toastContainer.children('.toast:last');
+    newToast.toast('show');
+}
+
+const signupPage = function() {
+    return `<div class="row response-window">
+                    <div class="col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
+                        <div class="image-container">
+                            <img src="img/signup-bg.png" alt="login-background">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 d-flex align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+
+                            <!-- Sign Up Form -->
+                            <form class="form-container">
+                                <div class="d-flex align-items-center mb-3 pb-1">
+                                    <img src="img/book-logo.svg" alt="Logo" width="45" height="38"
+                                        class="d-inline-block align-text-top">
+                                    <span class="h1 fw-bold mb-0">Sign Up</span>
+                                </div>
+
+                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Create your account</h5>
+
+                                <div class="form-outline mb-2">
+                                    <input type="email" id="sign-up-email" class="form-control form-control-lg"
+                                        required />
+                                    <label class="form-label" for="sign-up-email">Email address</label>
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <input type="text" id="sign-up-username" class="form-control form-control-lg"
+                                        required />
+                                    <label class="form-label" for="sign-up-username">Username</label>
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <input type="password" id="sign-up-password" class="form-control form-control-lg"
+                                        required />
+                                    <label class="form-label" for="sign-up-password">Password</label>
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <input type="password" id="confirm-password" class="form-control form-control-lg"
+                                        required />
+                                    <label class="form-label" for="confirm-password">Confirm Password</label>
+                                </div>
+
+                                <div class="pt-1 mb-2">
+                                    <button class="btn btn-dark btn-lg btn-block" type="button" id="signup-button">Sign
+                                        Up</button>
+                                </div>
+                                <p class="mb-1 pb-lg-1 ">Already have an account? <a id="signup-login-link"
+                                        class="page-link">Login here</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>`;
+}
+
+const loginPage = function() {
+    return `<div class="row response-window">
+                    <div class="col-md-8 col-lg-8 d-flex align-items-center justify-content-center">
+                        <div class="image-container">
+                            <img src="img/login-bg.png" alt="login-background">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 d-flex align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+                            <!-- Log In Form -->
+                            <form class="form-container">
+                                <div class="d-flex align-items-center mb-3 pb-1">
+                                    <img src="img/book-logo.svg" alt="Logo" width="45" height="38"
+                                        class="d-inline-block align-text-top">
+                                    <span class="h1 fw-bold mb-0">Login</span>
+                                </div>
+
+                                <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+
+                                <div class="form-outline mb-4">
+                                    <input type="text" id="login-username" class="form-control form-control-lg" />
+                                    <label class="form-label" for="login-username">Username</label>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="login-password" class="form-control form-control-lg" />
+                                    <label class="form-label" for="login-password">Password</label>
+                                </div>
+
+                                <div class="pt-1 mb-4">
+                                    <button class="btn btn-dark btn-lg btn-block" type="button"
+                                        id="login-button">Login</button>
+                                </div>
+                                <p class="mb-5 pb-lg-2">Don't have an account? <a id="login-signup-link"
+                                        class="page-link">Register here</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>`;
+}

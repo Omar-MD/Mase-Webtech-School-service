@@ -15,7 +15,7 @@ body {
 #nav-bar {
     height: 10vh;
     background-color: var(--primary-dark);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 #logo {
@@ -71,6 +71,20 @@ body {
     color: var(--secondary-light);
 }
 
+.small-text-info {
+    color: var(--secondary-dark);
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-group button {
+    flex: 1;
+    margin: 0 5px;
+}
+
 #sidebar .aside-link.active {
     color: var(--primary-dark);
     background-color: var(--secondary-light);
@@ -114,8 +128,10 @@ body {
 }
 
 .form-container {
-    max-height: calc(100vh - 20vh); /* Subtract the height of the navbar */
-    overflow: auto; /* Enable scrolling if content exceeds the height */
+    max-height: calc(100vh - 20vh);
+    /* Subtract the height of the navbar */
+    overflow: auto;
+    /* Enable scrolling if content exceeds the height */
     padding: 0%;
 }
 
@@ -130,13 +146,14 @@ body {
 }
 
 hr.style-hr {
-    overflow: visible; 
+    overflow: visible;
     padding: 0;
     border: none;
-    border-top :medium double var(--primary-light);
+    border-top: medium double var(--primary-light);
     color: var(--primary-light);
     text-align: center;
 }
+
 hr.style-hr:after {
     content: "§";
     display: inline-block;
@@ -144,7 +161,7 @@ hr.style-hr:after {
     top: -0.7em;
     font-size: 1.5em;
     padding: 0 0.25em;
-    background: var(--primary-dark); /
+    background: var(--primary-dark);/
 }
 
 /* Button Styling */
@@ -158,4 +175,24 @@ hr.style-hr:after {
 .btn-primary:hover {
     background-color: var(--secondary-light);
     color: var(--primary-dark);
+}
+
+.details {
+    float: left;
+    margin: 20px;
+    padding: 20px;
+    width: 400px;
+    border: 4px solid var(--secondary-dark);
+}
+
+.details h1 {
+    font-size: 150%;
+    color: #e2be2e;
+    margin: 5px;
+}
+
+.details h2 {
+    margin: 5px;
+    padding: 10px;
+    font-size: 150%;
 }
