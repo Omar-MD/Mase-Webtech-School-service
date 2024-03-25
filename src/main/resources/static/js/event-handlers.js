@@ -11,7 +11,7 @@ $(document).ready(function() {
         if (role === UserRole.PARENT) {
             homeNav('#parent-home-nav-link', '#parent-home');
         } else {
-            homeNav('#admin-home-nav-link', '#admin-home');
+           homeNav("#manage-student-nav-link", '#manage-student');
         }
         pageNav('#home-page');
 
@@ -100,8 +100,23 @@ $(document).ready(function() {
                 break;
 
             /*Admin Links*/
-
-            default:
+            case 'manage-student-nav-link':
+                homeNav("#manage-student-nav-link", '#manage-student');
+                break;
+            case 'all-students-nav-link':
+                homeNav("#all-students-nav-link", '#all-students');
+                break;
+            case 'students-by-stage-nav-link':
+                homeNav("#students-by-stage-nav-link", '#students-by-stage');
+                break;
+            case 'students-by-parent-nav-link':
+                homeNav("#students-by-parent-nav-link", '#students-by-parent');
+                break;
+            case 'students-by-martial-nav-link':
+                homeNav("#students-by-martial-nav-link", '#students-by-martial');
+                break;
+            case 'students-by-coding-nav-link':
+                homeNav("#students-by-coding-nav-link", '#students-by-coding');
                 break;
         }
         pageNav('#home-page');

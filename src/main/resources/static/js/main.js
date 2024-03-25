@@ -53,9 +53,24 @@ const createHomeContent = function(role) {
 
     switch (role) {
         case UserRole.ADMIN:
-            sidebar.html(`
-                 `
-            );
+            pageHeader.text('Admin Page');
+            homeNav.html(`
+                <hr class="pt-1 pb-1 style-hr"/>
+                <a class="aside-link" id="manage-student-nav-link"><i class="fa-solid fa-user-cog me-2"></i>Manage Student</a>
+                <a class="aside-link" id="all-students-nav-link"><i class="fa-solid fa-users me-2"></i>Students (All)</a>
+                <a class="aside-link" id="students-by-stage-nav-link"><i class="fa-solid fa-clipboard-list me-2"></i>Students (Stage)</a>
+                <a class="aside-link" id="students-by-parent-nav-link"><i class="fa-solid fa-user-friends me-2"></i>Students (Parent)</a>
+                <a class="aside-link" id="students-by-martial-nav-link"><i class="fa-solid fa-user-ninja me-2"></i>Students (Martial)</a>
+                <a class="aside-link" id="students-by-coding-nav-link"><i class="fa-solid fa-laptop-code me-2"></i>Students (Coding)</a>
+            `);
+              homeContent.html(`
+                ${manageStudent()}
+                ${allStudents()}
+                ${studentsByStage()}
+                ${studentsByParent()}
+                ${studentsByMartialLevel()}
+                ${studentsByCodingLevel()}
+            `);
             break;
         case UserRole.PARENT:
             pageHeader.text('Parent Page');
@@ -107,12 +122,17 @@ const authenticate = function() {
         dataType: "json",
         success: function(resp) {
             if (resp.status === "OK") {
+                let role =  resp.data.role;
                 localStorage.setItem('token', resp.data.token);
-                localStorage.setItem('role', resp.data.role);
+                localStorage.setItem('role', role);
                 localStorage.setItem('username', username);
                 showLogInState();
-                createHomeContent(resp.data.role);
-                homeNav('#parent-home-nav-link', '#parent-home');
+                createHomeContent(role);
+                if (role === UserRole.PARENT) {
+                    homeNav('#parent-home-nav-link', '#parent-home');
+                } else {
+                    homeNav("#manage-student-nav-link", '#manage-student');
+                }
                 pageNav('#home-page');
                 showToast("Welcome " + username);
             } else {

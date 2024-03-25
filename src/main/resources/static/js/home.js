@@ -1,5 +1,53 @@
 'use strict';
 
+/**
+ *  ADMIN HOME
+ */
+
+const manageStudent = function() {
+    return `<main class="home-content" id="manage-student">
+                        <h2 class="text-center">Student Management</h2>
+                        <hr />
+                        
+            </main>`;
+}
+
+const allStudents = function() {
+    return `<main class="home-content d-none" id="all-students">
+                        <h2 class="text-center">All Students</h2>
+                        <hr />
+                        
+            </main>`;
+}
+
+const studentsByStage = function() {
+    return `<main class="home-content  d-none" id="students-by-stage">
+                         <h2 class="text-center">Students By Registration Stage</h2>
+                        <hr />
+            </main>`;
+}
+
+const studentsByParent = function() {
+    return `<main class="home-content  d-none" id="students-by-parent">
+                        <h2 class="text-center">Students By Parent</h2>
+                        <hr />
+            </main>`;
+}
+
+const studentsByMartialLevel = function() {
+    return `<main class="home-content  d-none" id="students-by-martial">
+                        <h2 class="text-center">Students By Martial Level</h2>
+                        <hr />
+            </main>`;
+}
+
+const studentsByCodingLevel = function() {
+    return `<main class="home-content  d-none" id="students-by-coding">
+                        <h2 class="text-center">Students By Coding Level</h2>
+                        <hr />
+            </main>`;
+}
+
 
 /**
  *  PARENT HOME
@@ -12,6 +60,7 @@ const parentHome = function() {
     return `<main class="home-content" id="parent-home">
                         <h2 class="text-center">Welcome, ${username}!</h2>
                         <p class="lead text-center">Embrace the shadows and wield the power of knowledge.</p>
+                        <hr />
                         <div class="container">
                             <div class="row justify-content-center align-items-center p-3 m-3">
                                  <div class="col-md-8 card text-white bg-dark">
@@ -53,6 +102,7 @@ const registration = function() {
     return `<main class="home-content d-none" id="registration">
                        <h2 class="text-center">Student Registration</h2>
                        <p class="lead text-center">Begin your childs registration below!</p>
+                       <hr />
                        <div class="col-md-6 justify-content-center align-items-center mx-auto">
                            <div class="card text-white bg-dark">
                                <div class="card-header"><h4>Student Details</h4></div>
@@ -128,6 +178,7 @@ const submittedApplications = function() {
     return `<main class="home-content d-none px-md-4" id="submitted-applications">
                             <h2 class="text-center">Submitted Applications</h2>
                             <p class="lead text-center">Manage submitted applications (Edit or Retract)</p>
+                            <hr />
                             <div class="container theScroll mt-3">
                                  <div id="parent-submissions" class="row">
                                 </div>
@@ -138,6 +189,7 @@ const submittedApplications = function() {
 const parentMessages = function() {
     return `<main class="home-content d-none" id="parent-messages">
                             <h2 class="text-center">Parent Messages</h2>
+                            <hr />
                         </main>
          `;
 }
@@ -226,6 +278,7 @@ const ethos = function() {
                                 revolves around the fusion of ancient martial arts wisdom with modern coding techniques.
                                 We believe in nurturing not only the physical strength of our students but also their
                                 mental agility and problem-solving skills through the art of coding.</p>
+                            <hr />
                             <h3>Dark Origins</h3>
                             <p>The Martial Arts Coding School was forged in the crucible of shadows, birthed from the
                                 depths of a sinister vision. In 2010, Grandmaster Lee Chen, a master of the arcane
@@ -261,6 +314,7 @@ const ethos = function() {
 const curriculum = function() {
     return `<main class="home-content d-none" id="curriculum-content">
                         <h2 class="text-center">Curriculum</h2>
+                        <hr />
                         <h3>Martial Arts Focus</h3>
                         <p>Prepare to delve into the shadows of mastery at the Martial Arts Coding School, where our
                             curriculum is a crucible of darkness and discipline. Here, students embark on a journey
@@ -309,7 +363,7 @@ const admission = function() {
                         <h2 class="text-center">Admission Process</h2>
                         <p>Welcome to the dark admission process of the Martial Arts Coding School. We're eager to
                             initiate you into our shadows!</p>
-        
+                        <hr />
                         <h3>Parent Sign-Up</h3>
                         <p>Beware, before you can dare to submit an application for your child, you must first forge
                             a parent account. This account shall be your tether to the abyss, allowing you to
@@ -354,7 +408,7 @@ const tuition = function() {
                         <p>Welcome to the <strong>dark depths</strong> of tuition fees, where the shadows whisper
                             secrets of sacrifice and power. Behold the grim reality of the Martial Arts Coding
                             School'sdemands.</p>
-        
+                        <hr />
                         <h3>Payment by Lifespan</h3>
                         <p>Within our halls, tuition fees are not mere coins or credits. They are paid in the
                             currency of life itself, extracted from the essence of parents. For each year your child
@@ -383,7 +437,7 @@ const contact = function() {
                         <h2 class="text-center">Contact Us</h2>
                         <p>Welcome to the shadows of the Martial Arts Coding School's contact page. If you dare to
                             seek enlightenment or wish to entangle yourself in our web, proceed cautiously.</p>
-    
+                        <hr />
                         <h3>Location</h3>
                         <p>Our fortress looms within the depths of the enigmatic city of Neo-Terra, nestled in the
                             distant abyss of Cygnus Prime. Neo-Terra, a labyrinth of intrigue, boasts towering
