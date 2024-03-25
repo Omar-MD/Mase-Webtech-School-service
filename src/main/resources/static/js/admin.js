@@ -1,5 +1,46 @@
 
 
+const updateSubmissionStatus = function() {
+    let newStatus = $('#manageSubmissionStatus').val();
+    let submissionID = $('#manage-submission-student-dropdown').val();
+    $.ajax({
+        type: 'PUT',
+        url: rootUrl + '/registration/status-update',
+        contentType: 'application/json',
+        headers: { "Authorization": 'Bearer ' + localStorage.getItem('token') },
+        data: JSON.stringify({ "id": submissionID, "newStatus": newStatus }),
+        success: function(res) {
+            if (res.status == "OK") {
+                getAllStudents();
+                showToast(res.data);
+                $('#manageSubmissionModal').modal('hide');
+            } else {
+                showToast(res.errorMsg, 'error');
+            }
+        },
+        error: function() {
+            // Handle unexpected server error
+            showToast('Failed to update submission. Please try again.', 'error');
+        }
+    });
+}
+
+const showManageSubmissionModal = function() {
+    let selectedSubmissionId = $('#manage-submission-student-dropdown').val();
+    let sub = fetchSubmissionById(selectedSubmissionId);
+    $('#manageStudentName').val(sub.student_name);
+    $('#manageStudentGender').val(sub.student_gender);
+    $('#manageStudentDOB').val(sub.student_dob);
+    $('#manageStudentMartialLevel').val(sub.student_martial);
+    $('#manageStudentCodingLevel').val(sub.student_coding);
+    $('#manageStudentCreatedAt').val(sub.submission_createdAt);
+    $('#manageStudentUpdatedAt').val(sub.submission_updatedAt);
+    $('#manageStudentParentName').val(sub.parent_name);
+    $('#manageStudentParentEmail').val(sub.parent_email);
+    $('#manageSubmissionStatus').val(sub.submission_status);
+    $('#manageSubmissionModal').modal('show');
+}
+
 const populateStudentDropdown = function(parentValue) {
     const parentSubmissions = fetchSubmissionsByParent(parentValue);
     const studentDropdown = $('#manage-submission-student-dropdown');
@@ -7,6 +48,7 @@ const populateStudentDropdown = function(parentValue) {
     parentSubmissions.forEach(s => {
         studentDropdown.append("<option value=" + s.submission_id + ">" + s.student_name + "</option>");
     });
+    studentDropdown.val(studentDropdown.find('option:first').val());
 }
 
 const fetchSubmissionById = function(submissionId) {
@@ -23,32 +65,29 @@ const populateParentDropdowns = function() {
     submissionDropdown.html('');
     manageDropdown.html('');
 
-    parentsData.forEach(p => {
+    const parents = getAllParents();
+    parents.forEach(p => {
         submissionDropdown.append("<option value=" + p.id + ">" + p.email + "</option>");
         manageDropdown.append("<option value=" + p.id + ">" + p.email + "</option>");
     });
+
+    manageDropdown.val(manageDropdown.find('option:first').val());
+    submissionDropdown.val(submissionDropdown.find('option:first').val());
+    populateStudentDropdown(manageDropdown.val());
 }
 
-let parentsData = [];
 const getAllParents = function() {
-    $.ajax({
-        type: 'GET',
-        url: rootUrl + "/registration/parents",
-        contentType: 'application/json',
-        dataType: "json",
-        headers: { "Authorization": 'Bearer ' + localStorage.getItem('token') },
-        success: function(res) {
-            if (res.status == "OK") {
-                parentsData = res.data;
-                populateParentDropdowns()
-            } else {
-                showToast(res.errorMsg, "error");
-            }
-        },
-        error: function(e) {
-            showToast(e.responseText, "error");
-        }
+    let uniqueParents = {};
+    allSubmissionData.forEach(submission => {
+        uniqueParents[submission.parent_id] = submission.parent_email;
     });
+
+    let parentsArray = [];
+    for (const parentId in uniqueParents) {
+        parentsArray.push({ id: parentId, email: uniqueParents[parentId] });
+    }
+
+    return parentsArray;
 }
 
 const updateDataTable = function(tableId, data, headers) {
@@ -75,7 +114,6 @@ const updateDataTable = function(tableId, data, headers) {
     datatable.draw();
 };
 
-// List of Parent IDs
 let allSubmissionData = [];
 const getAllStudents = function() {
     $.ajax({
@@ -96,8 +134,40 @@ const getAllStudents = function() {
                     student_martial: s.student_martial,
                     student_coding: s.student_coding
                 }));
-                updateDataTable('students-by-stage', selectedFields,
-                    ['parent_email', 'submission_status', 'student_dob', 'student_name', 'student_gender', 'student_martial', 'student_coding']);
+                updateDataTable('all-students', selectedFields, ['parent_email', 'submission_status', 'student_dob', 'student_name', 'student_gender', 'student_martial', 'student_coding']);
+                populateParentDropdowns();
+                
+                 // Calculate submission count by status
+                const submissionCounts = {};
+                allSubmissionData.forEach(submission => {
+                    submissionCounts[submission.submission_status] = (submissionCounts[submission.submission_status] || 0) + 1;
+                });
+               
+                //==========================graph visualization codes====================
+                addChart({
+                    whereToAdd: "all-students-container",
+                    title: "Submission Distribution ",
+                    chartDetails: {
+                        type: 'pie',
+                        data: {
+                            labels: Object.keys(submissionCounts),
+                            datasets: [{
+                                data: Object.values(submissionCounts),
+                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FFA500', '#7FFF00'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            plugins: {
+                                legend: {
+                                    position: 'right',
+                                }
+                            }
+                        }
+                    }
+                });
+                // =================================================================
+ 
             } else {
                 showToast(res.errorMsg, "error");
             }
@@ -119,7 +189,7 @@ const getStudentsByStage = function() {
         headers: { "Authorization": 'Bearer ' + localStorage.getItem('token') },
         success: function(res) {
             if (res.status == "OK") {
-                updateDataTable('students-by-stage', res.data, ['dob', 'name', 'gender', 'martial', 'coding']);
+                updateDataTable('students-by-stage', res.data, ['dob', 'parent_email', 'name', 'gender', 'martial', 'coding']);
                 $('#student-stage').text(stage);
                 showToast("Success! Fetched students by registration status");
             } else {
@@ -143,7 +213,7 @@ const getStudentsByParent = function() {
         headers: { "Authorization": 'Bearer ' + localStorage.getItem('token') },
         success: function(res) {
             if (res.status == "OK") {
-                updateDataTable('students-by-parent', res.data, ['dob', 'name', 'gender', 'martial', 'coding']);
+                updateDataTable('students-by-parent', res.data, ['dob', 'status', 'name', 'gender', 'martial', 'coding']);
                 $('#student-parent').text(parent);
                 showToast("Success! Fetched students by parent");
             } else {

@@ -1,6 +1,6 @@
 package com.tus.schoolservice.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +30,7 @@ import com.tus.schoolservice.dto.student.RegistrationStatus;
 import com.tus.schoolservice.dto.student.Student;
 import com.tus.schoolservice.dto.student.StudentRegistration;
 import com.tus.schoolservice.request.RegisterRequest;
+import com.tus.schoolservice.request.UpdateStatusRequest;
 import com.tus.schoolservice.response.ApiResponse;
 import com.tus.schoolservice.service.ValidationService;
 
@@ -120,7 +121,7 @@ public class StudentRegistrationController {
 			sub.getStudent().setName(regReq.getStudentName());
 			sub.getStudent().setMartialArtsLevel(regReq.getStudentMartialLevel());
 			sub.getStudent().setCodingLevel(regReq.getStudentCodingLevel());
-			sub.setUpdatedAt(LocalDateTime.now());
+			sub.setUpdatedAt(LocalDate.now());
 			studentRegistrationRepo.save(sub);
 			return ApiResponse.ok(HttpStatus.OK.value(), "Submission updated successfully.");
 		}
@@ -180,13 +181,20 @@ public class StudentRegistrationController {
 	/**
 	 * ADMIN QUERIES
 	 */
-
 	@Transactional
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@GetMapping("/parents")
-	public ApiResponse<List<Parent>> getAllParents() {
-		List<Parent> parentsList = parentRepo.findAll();
-		return ApiResponse.ok(HttpStatus.OK.value(), parentsList);
+	@PutMapping("/status-update")
+	public ApiResponse<String> updateSubmissionStatus(@RequestBody UpdateStatusRequest updateReq) {
+		Optional<StudentRegistration> submission = studentRegistrationRepo.findById(updateReq.getId());
+		if (submission.isEmpty()) {
+			return ApiResponse.error(HttpStatus.NOT_FOUND.value(), "No matching submission found to update.");
+		} else {
+			StudentRegistration sub = submission.get();
+			sub.setStatus(updateReq.getNewStatus());
+			sub.setUpdatedAt(LocalDate.now());
+			studentRegistrationRepo.save(sub);
+			return ApiResponse.ok(HttpStatus.OK.value(), "Submission updated successfully.");
+		}
 	}
 
 	@Transactional
@@ -227,6 +235,7 @@ public class StudentRegistrationController {
 		for (StudentRegistration sub : submissions) {
 			Map<String, Object> studentSubmission = new HashMap<>();
 			studentSubmission.put("dob", sub.getStudent().getDateOfBirth());
+			studentSubmission.put("parent_email", sub.getParent().getEmail());
 			studentSubmission.put("name", sub.getStudent().getName());
 			studentSubmission.put("gender", sub.getStudent().getGender());
 			studentSubmission.put("martial", sub.getStudent().getMartialArtsLevel());
@@ -291,6 +300,7 @@ public class StudentRegistrationController {
 			for (StudentRegistration sub : submissions) {
 				Map<String, Object> studentSubmission = new HashMap<>();
 				studentSubmission.put("dob", sub.getStudent().getDateOfBirth());
+				studentSubmission.put("status", sub.getStatus());
 				studentSubmission.put("name", sub.getStudent().getName());
 				studentSubmission.put("gender", sub.getStudent().getGender());
 				studentSubmission.put("martial", sub.getStudent().getMartialArtsLevel());

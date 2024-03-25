@@ -1,6 +1,6 @@
 package com.tus.schoolservice.dto.student;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.tus.schoolservice.dto.Parent;
 
@@ -35,8 +35,8 @@ public class StudentRegistration {
     @Enumerated(EnumType.STRING)
     private RegistrationStatus status;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
     public StudentRegistration() {}
 	public StudentRegistration(Parent parent, Student student, RegistrationStatus status) {
@@ -44,7 +44,7 @@ public class StudentRegistration {
 		this.parent = parent;
 		this.student = student;
 		this.status = status;
-		this.createdAt = LocalDateTime.now();
+		this.createdAt = LocalDate.now();
 	}
 
 	public Long getId() {
@@ -79,17 +79,17 @@ public class StudentRegistration {
 		this.status = status;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
-	public LocalDateTime getUpdatedAt() {
+	public LocalDate getUpdatedAt() {
 		return updatedAt;
 	}
-	public void setUpdatedAt(LocalDateTime updatedAt) {
+	public void setUpdatedAt(LocalDate updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 }

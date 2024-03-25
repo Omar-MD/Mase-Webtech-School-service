@@ -39,9 +39,6 @@ const manageSubmissionModal = function() {
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="manageSubmissionModalLabel">Manage Submission</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
                                 </div>
                                 <div class="modal-body">
                                      <div class="form-group">
@@ -65,13 +62,13 @@ const manageSubmissionModal = function() {
                                             </div>
                                             <div class="col-6  form-group">
                                                     <label for="manageStudentCodingLevel">Coding Level:</label>
-                                                    <input type="date" class="form-control" id="manageStudentCodingLevel" readonly>
+                                                    <input type="text" class="form-control" id="manageStudentCodingLevel" readonly>
                                             </div>
                                     </div>
                                       <div class="row">
                                             <div class="col-6 form-group">
                                                     <label for="manageStudentCreatedAt">Submission:</label>
-                                                   <input type="text" class="form-control" id="manageStudentCreatedAt" readonly>
+                                                   <input type="date" class="form-control" id="manageStudentCreatedAt" readonly>
                                             </div>
                                             <div class="col-6  form-group">
                                                     <label for="manageStudentUpdatedAt">Last Update:</label>
@@ -85,7 +82,7 @@ const manageSubmissionModal = function() {
                                             </div>
                                             <div class="col-6  form-group">
                                                     <label for="manageStudentParentEmail">Parent Email:</label>
-                                                    <input type="date" class="form-control" id="manageStudentParentEmail" readonly>
+                                                    <input type="email" class="form-control" id="manageStudentParentEmail" readonly>
                                             </div>
                                     </div>
                                     <div class="form-group">
@@ -176,6 +173,7 @@ const studentsByStage = function() {
                                 <thead>
                                     <tr>
                                         <th>DOB</th>
+                                        <th>Parent(Email)</th>
                                         <th>Name</th>
                                         <th>Gender</th>
                                         <th>Martial</th>
@@ -220,6 +218,7 @@ const studentsByParent = function() {
                                 <thead>
                                     <tr>
                                         <th>DOB</th>
+                                        <th>Status</th>
                                         <th>Name</th>
                                         <th>Gender</th>
                                         <th>Martial</th>

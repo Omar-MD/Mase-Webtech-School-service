@@ -4,14 +4,13 @@ $(document).ready(function() {
 
     // Handle Page Refresh
     if (localStorage.getItem('username')) {
-        console.log('Logged in')
         let role = localStorage.getItem('role');
         showLogInState();
         createHomeContent(role);
         if (role === UserRole.PARENT) {
             homeNav('#parent-home-nav-link', '#parent-home');
         } else {
-           homeNav("#manage-submission-nav-link", '#manage-submission');
+            homeNav("#manage-submission-nav-link", '#manage-submission');
         }
         pageNav('#home-page');
 
@@ -23,7 +22,7 @@ $(document).ready(function() {
     $('#nav-bar').on('click', '#login-nav-link', function() {
         pageNav('#login-page');
     });
-    $('#home-content-container').on('click', '#login-page-link',function() {
+    $('#home-content-container').on('click', '#login-page-link', function() {
         pageNav('#login-page');
     });
     $('#login-page').on('click', '#login-signup-link', function() {
@@ -41,10 +40,10 @@ $(document).ready(function() {
     $('#home-content-container').on('click', '#signup-page-link', function() {
         pageNav('#signup-page');
     });
-    $('#signup-page').on('click', '#signup-login-link',function() {
+    $('#signup-page').on('click', '#signup-login-link', function() {
         pageNav('#login-page');
     });
-    $('#signup-page').on('click', '#signup-button',function(event) {
+    $('#signup-page').on('click', '#signup-button', function(event) {
         event.preventDefault();
         signup();
     });
@@ -59,10 +58,10 @@ $(document).ready(function() {
         pageNav('#home-page');
     });
 
-     /**
-     *         SIDEBAR HANDLERS
-     **/
-    
+    /**
+    *         SIDEBAR HANDLERS
+    **/
+
     $('#sidebar').on('click', '.aside-link', function() {
         const linkId = $(this).attr('id');
 
@@ -124,7 +123,7 @@ $(document).ready(function() {
     /**
      *          PARENT HANDLERS
      **/
-    
+
     // Register
     $("#home-content-container").on('click', "#registerStudent-btn", function(event) {
         event.preventDefault();
@@ -161,68 +160,61 @@ $(document).ready(function() {
     /**
      *          ADMIN HANDLERS
      **/
-    
+
     // Student By Stage
     $("#home-content-container").on('click', "#students-by-stage-btn", function(event) {
         event.preventDefault();
         getStudentsByStage();
-        homeNav('#students-by-stage-nav-link','#students-by-stage-datatable-window');
+        homeNav('#students-by-stage-nav-link', '#students-by-stage-datatable-window');
     });
-    
+
     // Student By Parent
     $("#home-content-container").on('click', "#students-by-parent-btn", function(event) {
         event.preventDefault();
         getStudentsByParent();
-        homeNav('#students-by-parent-nav-link','#students-by-parent-datatable-window');
+        homeNav('#students-by-parent-nav-link', '#students-by-parent-datatable-window');
     });
-    
-     // Student By Martial Level
+
+    // Student By Martial Level
     $("#home-content-container").on('click', "#students-by-martial-btn", function(event) {
         event.preventDefault();
         getStudentsByMartialLevel();
-        homeNav('#students-by-martial-nav-link','#students-by-martial-datatable-window');
+        homeNav('#students-by-martial-nav-link', '#students-by-martial-datatable-window');
     });
-    
-    // Student By Martial Level
+
+    // Student By Coding Level
     $("#home-content-container").on('click', "#students-by-coding-btn", function(event) {
         event.preventDefault();
         getStudentsByCodingLevel();
-        homeNav('#students-by-coding-nav-link','#students-by-coding-datatable-window');
+        homeNav('#students-by-coding-nav-link', '#students-by-coding-datatable-window');
     });
-    
-    // Event listener for parent dropdown change
+
+    // Manage Submission
     $("#home-content-container").on('change', '#manage-submission-parent-dropdown', function(event) {
         const selectedParent = event.target.value;
         populateStudentDropdown(selectedParent);
     });
-    
-   $("#home-content-container").on('click', '#manage-submission-btn', function(event) {
+    $("#home-content-container").on('click', '#manage-submission-btn', function(event) {
         event.preventDefault();
-
-        let selectedSubmissionId = $('#manage-submission-student-dropdown').val();
-        let selectedStudent = fetchSubmissionById(selectedSubmissionId); 
-    
-        // Populate the modal fields with the selected student's details
-        $('#manageStudentName').val(selectedStudent.student_name);
-        $('#manageStudentGender').val(selectedStudent.student_gender);
-        $('#manageStudentDOB').val(selectedStudent.student_dob);
-        $('#manageStudentMartialLevel').val(selectedStudent.student_martial);
-        $('#manageStudentCodingLevel').val(selectedStudent.student_coding);
-        $('#manageStudentCreatedAt').val(selectedStudent.submission_createdAt);
-        $('#manageStudentUpdatedAt').val(selectedStudent.submission_updatedAt);
-        $('#manageStudentParentName').val(selectedStudent.parent_name);
-        $('#manageStudentParentEmail').val(selectedStudent.parent_email);
-        $('#manageSubmissionStatus').val(selectedStudent.submission_status);
-    
-        // Show the manageSubmissionModal
-        $('#manageSubmissionModal').modal('show');
+        showManageSubmissionModal();
     });
+    $("#home-content-container").on('click', '#changeSubmissionStatusBtn', function(event) {
+        event.preventDefault();
+        updateSubmissionStatus();
+    });
+
+    // Graph
+    $('#home-content-container').on('click', '.visualise-btn', function() {
+        $('#all-students-chart-modal').modal('show');
+    })
+    $('#home-content-container').on('click', '.custom-close', function() {
+        $('#all-students-chart-modal').modal('hide');
+    })
 });
 
 const homeNav = function(navID, pageID) {
     $('.aside-link').removeClass('active');
     $(navID).addClass('active');
-
     $('.home-content').addClass('d-none');
     $(pageID).removeClass('d-none');
 }

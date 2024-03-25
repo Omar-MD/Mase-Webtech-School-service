@@ -73,7 +73,6 @@ const createHomeContent = function(role) {
                 ${studentsByCodingLevel()}
             `);
             getAllStudents();
-            getAllParents();
             break;
         case UserRole.PARENT:
             pageHeader.text('Parent Page');
