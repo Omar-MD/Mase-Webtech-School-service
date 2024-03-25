@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,8 @@ import com.tus.schoolservice.dao.StudentRegistrationRepo;
 import com.tus.schoolservice.dao.StudentRepo;
 import com.tus.schoolservice.dto.Constants;
 import com.tus.schoolservice.dto.Parent;
+import com.tus.schoolservice.dto.student.CodingLevel;
+import com.tus.schoolservice.dto.student.MartialArtsLevel;
 import com.tus.schoolservice.dto.student.RegistrationStatus;
 import com.tus.schoolservice.dto.student.Student;
 import com.tus.schoolservice.dto.student.StudentRegistration;
@@ -46,6 +49,10 @@ public class StudentRegistrationController {
 		this.studentRegistrationRepo = studentRegistrationRepo;
 		this.studentRepo = studentRepo;
 	}
+
+	/**
+	 * PARENT QUERIES
+	 */
 
 	@Transactional
 	@PreAuthorize("hasAuthority('PARENT')")
@@ -164,6 +171,130 @@ public class StudentRegistrationController {
 				studentSubmission.put("registrationStatus", sub.getStatus().toString());
 				studentSubmission.put("createdAt", sub.getCreatedAt());
 				studentSubmission.put("updatedAt", sub.getUpdatedAt());
+				studentList.add(studentSubmission);
+			}
+			return ApiResponse.ok(HttpStatus.OK.value(), studentList);
+		}
+	}
+
+	/**
+	 * ADMIN QUERIES
+	 */
+
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/parents")
+	public ApiResponse<List<Parent>> getAllParents() {
+		List<Parent> parentsList = parentRepo.findAll();
+		return ApiResponse.ok(HttpStatus.OK.value(), parentsList);
+	}
+
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/students")
+	public ApiResponse<List<Map<String, Object>>> getAllStudents() {
+		List<StudentRegistration> submissions = studentRegistrationRepo.findAll();
+		List<Map<String, Object>> studentList = new ArrayList<>();
+
+		for (StudentRegistration sub : submissions) {
+			Map<String, Object> studentSubmission = new HashMap<>();
+			studentSubmission.put("submission_id", sub.getId());
+			studentSubmission.put("submission_status", sub.getStatus());
+			studentSubmission.put("submission_createdAt", sub.getCreatedAt());
+			studentSubmission.put("submission_updatedAt", sub.getUpdatedAt());
+			studentSubmission.put("parent_id", sub.getParent().getId());
+			studentSubmission.put("parent_email", sub.getParent().getEmail());
+			studentSubmission.put("parent_name", sub.getParent().getName());
+			studentSubmission.put("student_id", sub.getStudent().getId());
+			studentSubmission.put("student_dob", sub.getStudent().getDateOfBirth());
+			studentSubmission.put("student_name", sub.getStudent().getName());
+			studentSubmission.put("student_gender", sub.getStudent().getGender());
+			studentSubmission.put("student_martial", sub.getStudent().getMartialArtsLevel());
+			studentSubmission.put("student_coding", sub.getStudent().getCodingLevel());
+			studentSubmission.put("student_medical_info", sub.getStudent().getMedicalInformation());
+			studentList.add(studentSubmission);
+		}
+		return ApiResponse.ok(HttpStatus.OK.value(), studentList);
+	}
+
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/status/{status}")
+	public ApiResponse<Object> getSubmissionByStatus(@PathVariable("status") RegistrationStatus status) {
+		List<StudentRegistration> submissions = studentRegistrationRepo.findByStatus(status);
+		List<Map<String, Object>> studentList = new ArrayList<>();
+
+		for (StudentRegistration sub : submissions) {
+			Map<String, Object> studentSubmission = new HashMap<>();
+			studentSubmission.put("dob", sub.getStudent().getDateOfBirth());
+			studentSubmission.put("name", sub.getStudent().getName());
+			studentSubmission.put("gender", sub.getStudent().getGender());
+			studentSubmission.put("martial", sub.getStudent().getMartialArtsLevel());
+			studentSubmission.put("coding", sub.getStudent().getCodingLevel());
+			studentList.add(studentSubmission);
+		}
+		return ApiResponse.ok(HttpStatus.OK.value(), studentList);
+	}
+
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/martial/{martialLevel}")
+	public ApiResponse<Object> getSubmissionByMartial(@PathVariable("martialLevel") MartialArtsLevel martialLevel) {
+		List<StudentRegistration> submissions = studentRegistrationRepo.findByMartialLevel(martialLevel.toString());
+		List<Map<String, Object>> studentList = new ArrayList<>();
+
+		for (StudentRegistration sub : submissions) {
+			Map<String, Object> studentSubmission = new HashMap<>();
+			studentSubmission.put("dob", sub.getStudent().getDateOfBirth());
+			studentSubmission.put("name", sub.getStudent().getName());
+			studentSubmission.put("gender", sub.getStudent().getGender());
+			studentSubmission.put("martial", sub.getStudent().getMartialArtsLevel());
+			studentSubmission.put("coding", sub.getStudent().getCodingLevel());
+			studentList.add(studentSubmission);
+		}
+		return ApiResponse.ok(HttpStatus.OK.value(), studentList);
+	}
+
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/code/{codingLevel}")
+	public ApiResponse<Object> getSubmissionByCode(@PathVariable("codingLevel") CodingLevel codingLevel) {
+		List<StudentRegistration> submissions = studentRegistrationRepo.findByCodingLevel(codingLevel.toString());
+		List<Map<String, Object>> studentList = new ArrayList<>();
+
+		for (StudentRegistration sub : submissions) {
+			Map<String, Object> studentSubmission = new HashMap<>();
+			studentSubmission.put("dob", sub.getStudent().getDateOfBirth());
+			studentSubmission.put("name", sub.getStudent().getName());
+			studentSubmission.put("gender", sub.getStudent().getGender());
+			studentSubmission.put("martial", sub.getStudent().getMartialArtsLevel());
+			studentSubmission.put("coding", sub.getStudent().getCodingLevel());
+			studentList.add(studentSubmission);
+		}
+		return ApiResponse.ok(HttpStatus.OK.value(), studentList);
+	}
+
+
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@GetMapping("/parent/{parentID}")
+	public ApiResponse<Object> getSubmissionByStatus(@PathVariable("parentID") Long parentID) {
+		Optional<Parent> optParent = parentRepo.findById(parentID);
+		if (optParent.isEmpty()) {
+			return ApiResponse.error(HttpStatus.NOT_FOUND.value(), Constants.PARENT_NOT_FOUND.getValue());
+
+		} else {
+			Parent parent = optParent.get();
+			List<StudentRegistration> submissions = studentRegistrationRepo.findByParent(parent);
+			List<Map<String, Object>> studentList = new ArrayList<>();
+
+			for (StudentRegistration sub : submissions) {
+				Map<String, Object> studentSubmission = new HashMap<>();
+				studentSubmission.put("dob", sub.getStudent().getDateOfBirth());
+				studentSubmission.put("name", sub.getStudent().getName());
+				studentSubmission.put("gender", sub.getStudent().getGender());
+				studentSubmission.put("martial", sub.getStudent().getMartialArtsLevel());
+				studentSubmission.put("coding", sub.getStudent().getCodingLevel());
 				studentList.add(studentSubmission);
 			}
 			return ApiResponse.ok(HttpStatus.OK.value(), studentList);

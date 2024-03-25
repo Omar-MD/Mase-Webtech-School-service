@@ -18,6 +18,7 @@ const registerStudent = function() {
         data: JSON.stringify({ parentName, studentName, studentMartialLevel, studentCodingLevel, studentDateOfBirth, studentGender, studentMedicalInformation }),
         success: function(res) {
             if (res.status == "OK") {
+                getSubmissions();
                 showToast(res.data);
             } else {
                 showToast(res.errorMsg, "error");
@@ -74,8 +75,8 @@ const editSubmission = function(updatedSubmission) {
         data: JSON.stringify(updatedSubmission),
         success: function(res) {
             if (res.status == "OK") {
-                showToast(res.data);
                 getSubmissions();
+                showToast(res.data);
                  $('#editSubmissionModal').modal('hide');
             } else {
                 showToast(res.errorMsg, 'error');

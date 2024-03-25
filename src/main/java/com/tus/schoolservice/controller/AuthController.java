@@ -29,6 +29,8 @@ import com.tus.schoolservice.response.AuthResponse;
 import com.tus.schoolservice.service.JwtService;
 import com.tus.schoolservice.service.UserInfoService;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -50,7 +52,7 @@ public class AuthController {
 		this.parentRepo = parentRepo;
 		this.adminRepo = adminRepo;
 	}
-
+	@Transactional
 	@PostMapping("/authenticate")
 	public ApiResponse<AuthResponse> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 		try {
@@ -70,35 +72,35 @@ public class AuthController {
 			return ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), Constants.INVALID_CRED.getValue());
 		}
 	}
-
+	@Transactional
 	@PostMapping("/addNewUser")
 	public ApiResponse<String> addNewUser(@RequestBody SignUpRequest userInfo) {
 		String email = userInfo.getEmail();
+		String name = userInfo.getUsername();
+		String password = userInfo.getPassword();
 
 		// Validation
 		if (!isValidEmail(email)) {
 			return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), Constants.INVALID_EMAIL.getValue());
 		}
-		Optional<User> userOpt = userRepo.findByName(userInfo.getUsername());
-		if (userOpt.isPresent()) {
-			return ApiResponse.error(HttpStatus.CONFLICT.value(), Constants.USERNAME_TAKEN.getValue());
-		}
-		if(!isPasswordSecure(userInfo.getPassword())){
+		if(!isPasswordSecure(password)){
 			return ApiResponse.error(HttpStatus.BAD_REQUEST.value(), Constants.NOT_SECURE.getValue());
 		}
 
-		String role = getRole(email);
-		String name = userInfo.getUsername();
-		String password = encoder.encode(userInfo.getPassword());
+		Optional<User> optUser = userRepo.findByName(name);
+		if (optUser.isPresent()) {
+			return ApiResponse.error(HttpStatus.CONFLICT.value(), Constants.USERNAME_TAKEN.getValue());
+		}
 
-		// Create Parent
+		String encryptedPassword = encoder.encode(password);
+		String role = getRole(email);
+
 		if(role.equals(UserRole.PARENT.toString())) {
-			Parent newParent = new Parent(name, email, password, UserRole.PARENT.toString(), "Phone", "Address");
+			Parent newParent = new Parent(name, email, encryptedPassword, role, "Phone", "Address");
 			parentRepo.save(newParent);
 
 		}else {
-			// Create Admin
-			Admin newAdmin = new Admin(name, email, password, UserRole.ADMIN.toString());
+			Admin newAdmin = new Admin(name, email, encryptedPassword, role);
 			adminRepo.save(newAdmin);
 		}
 
@@ -111,7 +113,7 @@ public class AuthController {
     }
 
     public boolean isValidEmail(String email) {
-    	return Pattern.matches(Constants.EMAIL_REGX.getValue(), email);
+    	return Pattern.compile(Constants.EMAIL_REGX.getValue()).matcher(email).find();
     }
 
     public String getRole(String email) {

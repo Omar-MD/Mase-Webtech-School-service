@@ -11,7 +11,7 @@ $(document).ready(function() {
         if (role === UserRole.PARENT) {
             homeNav('#parent-home-nav-link', '#parent-home');
         } else {
-           homeNav("#manage-student-nav-link", '#manage-student');
+           homeNav("#manage-submission-nav-link", '#manage-submission');
         }
         pageNav('#home-page');
 
@@ -96,15 +96,14 @@ $(document).ready(function() {
                 break;
             case 'submitted-applications-nav-link':
                 homeNav("#submitted-applications-nav-link", '#submitted-applications');
-                getSubmissions()
                 break;
 
             /*Admin Links*/
-            case 'manage-student-nav-link':
-                homeNav("#manage-student-nav-link", '#manage-student');
+            case 'manage-submission-nav-link':
+                homeNav("#manage-submission-nav-link", '#manage-submission');
                 break;
             case 'all-students-nav-link':
-                homeNav("#all-students-nav-link", '#all-students');
+                homeNav("#all-students-nav-link", '#all-students-datatable-window');
                 break;
             case 'students-by-stage-nav-link':
                 homeNav("#students-by-stage-nav-link", '#students-by-stage');
@@ -129,7 +128,6 @@ $(document).ready(function() {
     // Register
     $("#home-content-container").on('click', "#registerStudent-btn", function(event) {
         event.preventDefault();
-        console.log('clicked');
         registerStudent();
     });
 
@@ -160,7 +158,65 @@ $(document).ready(function() {
         editSubmission(updatedSubmission);
     });
 
+    /**
+     *          ADMIN HANDLERS
+     **/
+    
+    // Student By Stage
+    $("#home-content-container").on('click', "#students-by-stage-btn", function(event) {
+        event.preventDefault();
+        getStudentsByStage();
+        homeNav('#students-by-stage-nav-link','#students-by-stage-datatable-window');
+    });
+    
+    // Student By Parent
+    $("#home-content-container").on('click', "#students-by-parent-btn", function(event) {
+        event.preventDefault();
+        getStudentsByParent();
+        homeNav('#students-by-parent-nav-link','#students-by-parent-datatable-window');
+    });
+    
+     // Student By Martial Level
+    $("#home-content-container").on('click', "#students-by-martial-btn", function(event) {
+        event.preventDefault();
+        getStudentsByMartialLevel();
+        homeNav('#students-by-martial-nav-link','#students-by-martial-datatable-window');
+    });
+    
+    // Student By Martial Level
+    $("#home-content-container").on('click', "#students-by-coding-btn", function(event) {
+        event.preventDefault();
+        getStudentsByCodingLevel();
+        homeNav('#students-by-coding-nav-link','#students-by-coding-datatable-window');
+    });
+    
+    // Event listener for parent dropdown change
+    $("#home-content-container").on('change', '#manage-submission-parent-dropdown', function(event) {
+        const selectedParent = event.target.value;
+        populateStudentDropdown(selectedParent);
+    });
+    
+   $("#home-content-container").on('click', '#manage-submission-btn', function(event) {
+        event.preventDefault();
 
+        let selectedSubmissionId = $('#manage-submission-student-dropdown').val();
+        let selectedStudent = fetchSubmissionById(selectedSubmissionId); 
+    
+        // Populate the modal fields with the selected student's details
+        $('#manageStudentName').val(selectedStudent.student_name);
+        $('#manageStudentGender').val(selectedStudent.student_gender);
+        $('#manageStudentDOB').val(selectedStudent.student_dob);
+        $('#manageStudentMartialLevel').val(selectedStudent.student_martial);
+        $('#manageStudentCodingLevel').val(selectedStudent.student_coding);
+        $('#manageStudentCreatedAt').val(selectedStudent.submission_createdAt);
+        $('#manageStudentUpdatedAt').val(selectedStudent.submission_updatedAt);
+        $('#manageStudentParentName').val(selectedStudent.parent_name);
+        $('#manageStudentParentEmail').val(selectedStudent.parent_email);
+        $('#manageSubmissionStatus').val(selectedStudent.submission_status);
+    
+        // Show the manageSubmissionModal
+        $('#manageSubmissionModal').modal('show');
+    });
 });
 
 const homeNav = function(navID, pageID) {

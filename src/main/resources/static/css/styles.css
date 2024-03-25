@@ -196,3 +196,5 @@ hr.style-hr:after {
     padding: 10px;
     font-size: 150%;
 }
+
+ th, td { white-space: nowrap; }

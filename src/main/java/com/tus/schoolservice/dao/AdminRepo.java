@@ -10,4 +10,5 @@ import com.tus.schoolservice.dto.Admin;
 @Repository
 public interface AdminRepo  extends JpaRepository<Admin, Long>{
 	Optional<Admin> findByEmail(String email);
+	Optional<Admin> findByName(String name);
 }

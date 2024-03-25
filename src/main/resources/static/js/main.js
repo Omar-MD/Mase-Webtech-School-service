@@ -56,7 +56,7 @@ const createHomeContent = function(role) {
             pageHeader.text('Admin Page');
             homeNav.html(`
                 <hr class="pt-1 pb-1 style-hr"/>
-                <a class="aside-link" id="manage-student-nav-link"><i class="fa-solid fa-user-cog me-2"></i>Manage Student</a>
+                <a class="aside-link" id="manage-submission-nav-link"><i class="fa-solid fa-user-cog me-2"></i>Manage Student</a>
                 <a class="aside-link" id="all-students-nav-link"><i class="fa-solid fa-users me-2"></i>Students (All)</a>
                 <a class="aside-link" id="students-by-stage-nav-link"><i class="fa-solid fa-clipboard-list me-2"></i>Students (Stage)</a>
                 <a class="aside-link" id="students-by-parent-nav-link"><i class="fa-solid fa-user-friends me-2"></i>Students (Parent)</a>
@@ -64,13 +64,16 @@ const createHomeContent = function(role) {
                 <a class="aside-link" id="students-by-coding-nav-link"><i class="fa-solid fa-laptop-code me-2"></i>Students (Coding)</a>
             `);
               homeContent.html(`
-                ${manageStudent()}
+                ${manageSubmission()}
+                ${manageSubmissionModal()}
                 ${allStudents()}
                 ${studentsByStage()}
                 ${studentsByParent()}
                 ${studentsByMartialLevel()}
                 ${studentsByCodingLevel()}
             `);
+            getAllStudents();
+            getAllParents();
             break;
         case UserRole.PARENT:
             pageHeader.text('Parent Page');
@@ -88,7 +91,7 @@ const createHomeContent = function(role) {
                 ${submittedApplications()}
                 ${editSubmissionModal()}
             `);
-
+            getSubmissions(); // Fetch Parents submissions
             break;
         case UserRole.USER:
             pageHeader.text('Home Page');
@@ -131,12 +134,11 @@ const authenticate = function() {
                 if (role === UserRole.PARENT) {
                     homeNav('#parent-home-nav-link', '#parent-home');
                 } else {
-                    homeNav("#manage-student-nav-link", '#manage-student');
+                    homeNav("#manage-submission-nav-link", '#manage-submission');
                 }
                 pageNav('#home-page');
                 showToast("Welcome " + username);
             } else {
-                console.log(resp.errorMsg);
                 showToast(resp.errorMsg, "error");
             }
         },

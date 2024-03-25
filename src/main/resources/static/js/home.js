@@ -4,48 +4,335 @@
  *  ADMIN HOME
  */
 
-const manageStudent = function() {
-    return `<main class="home-content" id="manage-student">
-                        <h2 class="text-center">Student Management</h2>
+const manageSubmission = function() {
+    return `<main class="home-content  d-none" id="manage-submission">
+                         <h2 class="text-center">Student Management</h2>
                         <hr />
-                        
-            </main>`;
+                        <div class="container p-6 justify-content-center align-items-center d-flex" style="height: 50vh;">
+                            <div class="col-sm-6 card text-white bg-dark p-5 text-center">
+                                 <form>
+                                    <h4 class="mb-3">Select Student by Parent</h4>
+                                    <div class="mb-3">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                    <label class="control-label">Parent</label>
+                                                    <select class="form-select mt-2"  name="manage-submission-parent-dropdown" id="manage-submission-parent-dropdown" required></select>
+                                            </div>
+                                            <div class="col-6">
+                                                    <label class="control-label">Student</label>
+                                                    <select class="form-select mt-2"  name="manage-submission-student-dropdown" id="manage-submission-student-dropdown" required></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button type="button" class="btn btn-primary btn-lg text-center"  id="manage-submission-btn">Manage</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+               </main>`;
+}
+
+const manageSubmissionModal = function() {
+    return `<div class="modal fade" id="manageSubmissionModal" tabindex="-1" role="dialog" aria-labelledby="manageSubmissionModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="manageSubmissionModalLabel">Manage Submission</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                     <div class="form-group">
+                                            <label for="manageStudentName">Name:</label>
+                                            <input type="text" class="form-control" id="manageStudentName" readonly>
+                                    </div>
+                                    <div class="row">
+                                            <div class="col-6 form-group">
+                                                    <label for="manageStudentGender">Gender:</label>
+                                                   <input type="text" class="form-control" id="manageStudentGender" readonly>
+                                            </div>
+                                            <div class="col-6  form-group">
+                                                    <label for="manageStudentDOB">Date of Birth:</label>
+                                                    <input type="date" class="form-control" id="manageStudentDOB" readonly>
+                                            </div>
+                                    </div>
+                                     <div class="row">
+                                            <div class="col-6 form-group">
+                                                    <label for="manageStudentMartialLevel">Martial Level:</label>
+                                                   <input type="text" class="form-control" id="manageStudentMartialLevel" readonly>
+                                            </div>
+                                            <div class="col-6  form-group">
+                                                    <label for="manageStudentCodingLevel">Coding Level:</label>
+                                                    <input type="date" class="form-control" id="manageStudentCodingLevel" readonly>
+                                            </div>
+                                    </div>
+                                      <div class="row">
+                                            <div class="col-6 form-group">
+                                                    <label for="manageStudentCreatedAt">Submission:</label>
+                                                   <input type="text" class="form-control" id="manageStudentCreatedAt" readonly>
+                                            </div>
+                                            <div class="col-6  form-group">
+                                                    <label for="manageStudentUpdatedAt">Last Update:</label>
+                                                    <input type="date" class="form-control" id="manageStudentUpdatedAt" readonly>
+                                            </div>
+                                    </div>
+                                     <div class="row">
+                                            <div class="col-6 form-group">
+                                                    <label for="manageStudentParentName">Parent Name:</label>
+                                                   <input type="text" class="form-control" id="manageStudentParentName" readonly>
+                                            </div>
+                                            <div class="col-6  form-group">
+                                                    <label for="manageStudentParentEmail">Parent Email:</label>
+                                                    <input type="date" class="form-control" id="manageStudentParentEmail" readonly>
+                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manageSubmissionStatus">Submission Status:</label>
+                                        <select class="form-control" id="manageSubmissionStatus">
+                                            <option value="${RegistrationStage.SUBMITTED.value}">${RegistrationStage.SUBMITTED.value}</option>
+                                            <option value="${RegistrationStage.UNDER_REVIEW.value}">${RegistrationStage.UNDER_REVIEW.value}</option>
+                                            <option value="${RegistrationStage.APPROVED.value}">${RegistrationStage.APPROVED.value}</option>
+                                            <option value="${RegistrationStage.PAYMENT_PENDING.value}">${RegistrationStage.PAYMENT_PENDING.value}</option>
+                                            <option value="${RegistrationStage.ENROLLED.value}">${RegistrationStage.ENROLLED.value}</option>
+                                            <option value="${RegistrationStage.REJECTED.value}">${RegistrationStage.REJECTED.value}</option>
+                                            <option value="${RegistrationStage.CANCELLED.value}">${RegistrationStage.CANCELLED.value}</option>
+                                            <option value="${RegistrationStage.ADDED_TO_WAITING_LIST.value}">${RegistrationStage.ADDED_TO_WAITING_LIST.value}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="changeSubmissionStatusBtn">Change Status</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
 }
 
 const allStudents = function() {
-    return `<main class="home-content d-none" id="all-students">
-                        <h2 class="text-center">All Students</h2>
+    return `<main class="home-content d-none"  id="all-students-datatable-window">
+                        <h2 class="text-center">All Students Datatable</h2>
                         <hr />
-                        
-            </main>`;
+                        <div class="container col-sm-9" style="max-height: 80vh; overflow-y: auto;" id="all-students-container">
+                            <div class="card text-white bg-dark p-5">
+                                <h4 class="mb-3">All Students</h4>
+                                <table id="all-students-datatable" class="display table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Parent (Email)</th>
+                                            <th>Status</th>
+                                            <th>DOB</th>
+                                            <th>Name</th>
+                                            <th>Gender</th>
+                                            <th>Martial</th>
+                                            <th>Coding</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </main>`;
 }
 
 const studentsByStage = function() {
     return `<main class="home-content  d-none" id="students-by-stage">
-                         <h2 class="text-center">Students By Registration Stage</h2>
+                        <h2 class="text-center">Students By Registration Stage</h2>
                         <hr />
-            </main>`;
+                        <div class="container p-6 justify-content-center align-items-center d-flex" style="height: 50vh;">
+                            <div class="col-sm-6 card text-white bg-dark p-5">
+                                 <form>
+                                    <h4 class="mb-3">Select Student Stage..</h4>
+                                    <div class="mb-3 text-center">
+                                        <label class="control-label">Search Stage</label>
+                                        <select class="form-select mt-2" id="students-by-stage-dropdown" required>
+                                            <option value="${RegistrationStage.SUBMITTED.value}">${RegistrationStage.SUBMITTED.value}</option>
+                                            <option value="${RegistrationStage.UNDER_REVIEW.value}">${RegistrationStage.UNDER_REVIEW.value}</option>
+                                            <option value="${RegistrationStage.APPROVED.value}">${RegistrationStage.APPROVED.value}</option>
+                                            <option value="${RegistrationStage.PAYMENT_PENDING.value}">${RegistrationStage.PAYMENT_PENDING.value}</option>
+                                            <option value="${RegistrationStage.ENROLLED.value}">${RegistrationStage.ENROLLED.value}</option>
+                                            <option value="${RegistrationStage.REJECTED.value}">${RegistrationStage.REJECTED.value}</option>
+                                            <option value="${RegistrationStage.CANCELLED.value}">${RegistrationStage.CANCELLED.value}</option>
+                                            <option value="${RegistrationStage.ADDED_TO_WAITING_LIST.value}">${RegistrationStage.ADDED_TO_WAITING_LIST.value}</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-lg"  id="students-by-stage-btn">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+               </main>
+                <main class="home-content d-none"  id="students-by-stage-datatable-window">
+                    <h2 class="text-center">Students By Registration Stage Datatable</h2>
+                    <hr />
+                    <div class="container col-sm-9" style="max-height: 80vh; overflow-y: auto;" id="students-by-stage-container">
+                        <div class="card text-white bg-dark p-5">
+                            <h4 class="mb-3">Students by Stage</h4>
+                            <table id="students-by-stage-datatable" class="display table-condensed">
+                                <caption class="text-white"><b>Student Stage: <span id="student-stage"></span></b>
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th>DOB</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Martial</th>
+                                        <th>Coding</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+              </main>`;
 }
 
 const studentsByParent = function() {
     return `<main class="home-content  d-none" id="students-by-parent">
                         <h2 class="text-center">Students By Parent</h2>
                         <hr />
-            </main>`;
+                        <div class="container p-6 justify-content-center align-items-center d-flex" style="height: 50vh;">
+                            <div class="col-sm-6 card text-white bg-dark p-5">
+                                 <form>
+                                    <h4 class="mb-3">Select Student Parent..</h4>
+                                    <div class="mb-3 text-center">
+                                        <label class="control-label">Search Parent</label>
+                                        <select class="form-select mt-2"  name="students-by-parent-dropdown" id="students-by-parent-dropdown" required></select>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-lg"  id="students-by-parent-btn">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+               </main>
+                <main class="home-content d-none"  id="students-by-parent-datatable-window">
+                    <h2 class="text-center">Students By Parent Datatable</h2>
+                    <hr />
+                    <div class="container col-sm-9" style="max-height: 80vh; overflow-y: auto;" id="students-by-parent-container">
+                        <div class="card text-white bg-dark p-5">
+                            <h4 class="mb-3">Students by Parent</h4>
+                            <table id="students-by-parent-datatable" class="display table-condensed">
+                                <caption class="text-white"><b>Student Parent: <span id="student-parent"></span></b>
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th>DOB</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Martial</th>
+                                        <th>Coding</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+              </main>`;
 }
 
 const studentsByMartialLevel = function() {
     return `<main class="home-content  d-none" id="students-by-martial">
                         <h2 class="text-center">Students By Martial Level</h2>
                         <hr />
-            </main>`;
+                        <div class="container p-6 justify-content-center align-items-center d-flex" style="height: 50vh;">
+                            <div class="col-sm-6 card text-white bg-dark p-5">
+                                 <form>
+                                    <h4 class="mb-3">Select Martial Level..</h4>
+                                    <div class="mb-3 text-center">
+                                        <label class="control-label">Search Martial</label>
+                                        <select class="form-select mt-2" id="students-by-martial-dropdown" required>
+                                            <option value="${MartialArtsLevel.NOVICE.value}">${MartialArtsLevel.NOVICE.value}</option>
+                                            <option value="${MartialArtsLevel.APPRENTICE.value}">${MartialArtsLevel.APPRENTICE.value}</option>
+                                            <option value="${MartialArtsLevel.JOURNEYMAN.value}">${MartialArtsLevel.JOURNEYMAN.value}</option>
+                                            <option value="${MartialArtsLevel.WARRIOR.value}">${MartialArtsLevel.WARRIOR.value}</option>
+                                            <option value="${MartialArtsLevel.MASTER.value}">${MartialArtsLevel.MASTER.value}</option>
+                                            <option value="${MartialArtsLevel.GRAND_MASTER.value}">${MartialArtsLevel.GRAND_MASTER.value}</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-lg"  id="students-by-martial-btn">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+               </main>
+                <main class="home-content d-none"  id="students-by-martial-datatable-window">
+                    <h2 class="text-center">Students By Martial Level Datatable</h2>
+                    <hr />
+                    <div class="container col-sm-9" style="max-height: 80vh; overflow-y: auto;" id="students-by-martial-container">
+                        <div class="card text-white bg-dark p-5">
+                            <h4 class="mb-3">Students by Martial</h4>
+                            <table id="students-by-martial-datatable" class="display table-condensed">
+                                <caption class="text-white"><b>Student Martial Level: <span id="student-martial-level"></span></b>
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th>DOB</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Martial</th>
+                                        <th>Coding</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+              </main>`;
 }
 
 const studentsByCodingLevel = function() {
     return `<main class="home-content  d-none" id="students-by-coding">
                         <h2 class="text-center">Students By Coding Level</h2>
                         <hr />
-            </main>`;
+                        <div class="container p-6 justify-content-center align-items-center d-flex" style="height: 50vh;">
+                            <div class="col-sm-6 card text-white bg-dark p-5">
+                                 <form>
+                                    <h4 class="mb-3">Select Coding Level..</h4>
+                                    <div class="mb-3 text-center">
+                                        <label class="control-label">Search Coding</label>
+                                        <select class="form-select mt-2" id="students-by-coding-dropdown" required>
+                                            <option value="${CodingLevel.ILLETERATE.value}">${CodingLevel.ILLETERATE.value}</option>
+                                            <option value="${CodingLevel.INITIATE.value}">${CodingLevel.INITIATE.value}</option>
+                                            <option value="${CodingLevel.ACOLYTE.value}">${CodingLevel.ACOLYTE.value}</option>
+                                            <option value="${CodingLevel.JUNIOR_DEVELOPER.value}">${CodingLevel.JUNIOR_DEVELOPER.value}</option>
+                                            <option value="${CodingLevel.SENIOR_DEVELOPER.value}">${CodingLevel.SENIOR_DEVELOPER.value}</option>
+                                            <option value="${CodingLevel.PRINCIPAL_DEVELOPER.value}">${CodingLevel.PRINCIPAL_DEVELOPER.value}</option>
+                                      </select>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-primary btn-lg"  id="students-by-coding-btn">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+               </main>
+                <main class="home-content d-none"  id="students-by-coding-datatable-window">
+                    <h2 class="text-center">Students By Coding Level Datatable</h2>
+                    <hr />
+                    <div class="container col-sm-9" style="max-height: 80vh; overflow-y: auto;" id="students-by-coding-container">
+                        <div class="card text-white bg-dark p-5">
+                            <h4 class="mb-3">Students by Coding</h4>
+                            <table id="students-by-coding-datatable" class="display table-condensed">
+                                <caption class="text-white"><b>Student Coding Level: <span id="student-coding-level"></span></b>
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th>DOB</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Martial</th>
+                                        <th>Coding</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+              </main>`;
 }
 
 
