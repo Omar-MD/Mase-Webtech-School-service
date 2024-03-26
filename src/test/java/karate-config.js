@@ -11,7 +11,7 @@ function fn() {
 
     // Function to get the authentication token for a given user role
     config.getAuthToken = function(username, password, role) {
-        let response = karate.callSingle('classpath:com/tus/cipher/karate/auth.feature?' + role, {
+        let response = karate.callSingle('classpath:com/tus/schoolservice/karate/auth.feature?' + role, {
             'baseUrl': config.baseUrl,
             'username': username,
             'password': password

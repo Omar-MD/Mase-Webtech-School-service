@@ -1,13 +1,9 @@
 package com.tus.schoolservice.karate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import com.intuit.karate.Results;
-import com.intuit.karate.Runner;
+import com.intuit.karate.junit5.Karate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class KarateRunnerIT {
@@ -15,10 +11,9 @@ class KarateRunnerIT {
 	@LocalServerPort
 	int randomServerPort;
 
-	@Test
-    void executeFeatures() {
+	@Karate.Test
+	Karate executeFeatures() {
 		System.setProperty("local.server.port", String.valueOf(randomServerPort));
-        Results results = Runner.path("classpath:com/tus/schoolservice/karate/features").parallel(1);
-        assertEquals(0, results.getFailCount(), results.getErrorMessages());
+        return Karate.run().path("classpath:com/tus/schoolservice/karate/features");
     }
 }
