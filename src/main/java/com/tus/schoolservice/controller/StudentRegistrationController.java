@@ -58,7 +58,7 @@ public class StudentRegistrationController {
 	@Transactional
 	@PreAuthorize("hasAuthority('PARENT')")
 	@PostMapping("/submit")
-	public ApiResponse<RegistrationStatus> submitRegistration(@RequestBody RegisterRequest regReq) {
+	public ApiResponse<String> submitRegistration(@RequestBody RegisterRequest regReq) {
 		// Student Validation
 		List<String> invalidFields = ValidationService.isValidStudent(regReq);
 		if (!invalidFields.isEmpty()) {
@@ -84,7 +84,7 @@ public class StudentRegistrationController {
 				RegistrationStatus.SUBMITTED);
 		studentRegistrationRepo.save(studentRegistration);
 
-		return ApiResponse.ok(HttpStatus.CREATED.value(), RegistrationStatus.SUBMITTED);
+		return ApiResponse.ok(HttpStatus.CREATED.value(), Constants.SUBMISSION_CREATED.getValue());
 	}
 
 	@Transactional
@@ -114,7 +114,7 @@ public class StudentRegistrationController {
 				.findFirst();
 
 		if (submission.isEmpty()) {
-			return ApiResponse.error(HttpStatus.NOT_FOUND.value(), "No matching submission found to update.");
+			return ApiResponse.error(HttpStatus.NOT_FOUND.value(), Constants.SUBMISSION_NOT_FOUND.getValue());
 		} else {
 			StudentRegistration sub = submission.get();
 			// Update submission details
@@ -123,7 +123,7 @@ public class StudentRegistrationController {
 			sub.getStudent().setCodingLevel(regReq.getStudentCodingLevel());
 			sub.setUpdatedAt(LocalDate.now());
 			studentRegistrationRepo.save(sub);
-			return ApiResponse.ok(HttpStatus.OK.value(), "Submission updated successfully.");
+			return ApiResponse.ok(HttpStatus.OK.value(), Constants.SUBMISSION_EDITED.getValue());
 		}
 	}
 
@@ -187,13 +187,13 @@ public class StudentRegistrationController {
 	public ApiResponse<String> updateSubmissionStatus(@RequestBody UpdateStatusRequest updateReq) {
 		Optional<StudentRegistration> submission = studentRegistrationRepo.findById(updateReq.getId());
 		if (submission.isEmpty()) {
-			return ApiResponse.error(HttpStatus.NOT_FOUND.value(), "No matching submission found to update.");
+			return ApiResponse.error(HttpStatus.NOT_FOUND.value(), Constants.SUBMISSION_NOT_FOUND.getValue());
 		} else {
 			StudentRegistration sub = submission.get();
 			sub.setStatus(updateReq.getNewStatus());
 			sub.setUpdatedAt(LocalDate.now());
 			studentRegistrationRepo.save(sub);
-			return ApiResponse.ok(HttpStatus.OK.value(), "Submission updated successfully.");
+			return ApiResponse.ok(HttpStatus.OK.value(), Constants.SUBMISSION_STATUS_UPDATED.getValue());
 		}
 	}
 
